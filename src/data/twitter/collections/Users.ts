@@ -14,12 +14,12 @@ export default class Users {
     public async details(id: string): Promise<User> {
         // If username is provided
         if(isNaN(Number(id))) {
-            // Fetching details using username
+            // Fetching and returning the details using username
             return await Rettiwt().users.getUserDetails(id);
         }
         // If id is provided
         else {
-            // Fetching details using id
+            // Fetching and returning the details using id
             return await Rettiwt().users.getUserDetailsById(id);
         }
     }

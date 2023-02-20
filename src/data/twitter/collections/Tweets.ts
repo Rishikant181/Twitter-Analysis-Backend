@@ -12,6 +12,7 @@ export default class Tweets {
      * @returns The details of the tweet with the given id
      */
     public async details(id: string): Promise<Tweet> {
+        // Fetching and returning the details of the tweet with the given id
         return await Rettiwt().tweets.getTweetById(id);
     }
 }
