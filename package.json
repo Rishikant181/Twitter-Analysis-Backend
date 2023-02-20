@@ -21,5 +21,9 @@
 	"devDependencies": {
 		"nodemon": "2.0.20",
 		"typescript": "4.9.5"
+	},
+	"dependencies": {
+		"express": "4.18.2",
+		"rettiwt-api": "^1.0.8"
 	}
 }
