@@ -2,9 +2,9 @@
 import { Rettiwt, User } from 'rettiwt-api';
 
 /**
- * @summary Handles all data related to Twitter users
+ * @summary Handles all data operations related to Twitter users
  */
-export default class UserService {
+export default class Users {
     // MEMBER METHODS
 
     /**
