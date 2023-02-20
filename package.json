@@ -1,0 +1,19 @@
+{
+	"name": "rettiwt-core",
+	"version": "1.0.0",
+	"description": "A Twitter analysis tool",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Rishikant181/Rettiwt-Core.git"
+	},
+	"author": "Rishikant Sahu & Asutosh Rath",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Rishikant181/Rettiwt-Core/issues"
+	},
+	"homepage": "https://github.com/Rishikant181/Rettiwt-Core#readme"
+}
