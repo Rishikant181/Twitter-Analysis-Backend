@@ -2,6 +2,7 @@
 import express from 'express';
 
 // ROUTERS
+import TweetRouter from './routers/TweetRouter';
 import UserRouter from './routers/UserRouter';
 
 // Creating new express app instance
@@ -14,6 +15,7 @@ app.listen(3000, () => {
 
 // Adding additional routers
 app.use('/users', UserRouter);
+app.use('/tweets', TweetRouter);
 
 // Setting up test endpoint
 app.get('/alive', (req, res) => {

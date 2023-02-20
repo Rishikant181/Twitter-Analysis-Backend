@@ -8,11 +8,11 @@ import Users from "./collections/Users";
 export default class TwitterContext {
     // MEMBER DATA
     public users: Users;                                            // To store the collection from where to fetch twitter user data
-    public tweet: Tweets;                                           // To store the collection from where to fetch twitter tweet data
+    public tweets: Tweets;                                          // To store the collection from where to fetch twitter tweet data
     
     // MEMBER METHODS
     constructor() {
         this.users = new Users();
-        this.tweet = new Tweets();
+        this.tweets = new Tweets();
     }
 }
