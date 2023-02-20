@@ -13,10 +13,10 @@ const UserRouter = Router();
 
 /** 
  * @returns The details of the Twitter user
- * @param userName The user name of the Twitter user whose details are to be fetched
+ * @param userName The id/username of the Twitter user whose details are to be fetched
  */
-UserRouter.get('/:userName', async (req, res) => {
-    res.send(await new TwitterContext().users.details(req.params.userName));
+UserRouter.get('/:id', async (req, res) => {
+    res.send(await new TwitterContext().users.details(req.params.id));
 });
 
 export default UserRouter;

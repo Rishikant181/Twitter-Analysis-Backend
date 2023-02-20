@@ -8,10 +8,19 @@ export default class Users {
     // MEMBER METHODS
 
     /**
-     * @param userName The username of the Twitter user
-     * @returns The details of the Twitter use with the given username
+     * @param id The id of the Twitter user, can be username or id
+     * @returns The details of the Twitter use with the given id
      */
-    public async details(userName: string): Promise<User> {
-        return await Rettiwt().users.getUserDetails(userName);
+    public async details(id: string): Promise<User> {
+        // If username is provided
+        if(isNaN(Number(id))) {
+            // Fetching details using username
+            return await Rettiwt().users.getUserDetails(id);
+        }
+        // If id is provided
+        else {
+            // Fetching details using id
+            return await Rettiwt().users.getUserDetailsById(id);
+        }
     }
 }
