@@ -16,6 +16,6 @@ export default class TwitterContext {
      */
     constructor(cookie: string = '') {
         this.users = new Users(cookie);
-        this.tweets = new Tweets();
+        this.tweets = new Tweets(cookie);
     }
 }

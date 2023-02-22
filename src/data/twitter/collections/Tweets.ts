@@ -1,5 +1,5 @@
 // PACKAGE LIBS
-import { Rettiwt, Tweet, TweetFilter, CursoredData } from 'rettiwt-api';
+import { Rettiwt, User, Tweet, TweetFilter, CursoredData } from 'rettiwt-api';
 
 /**
  * @summary Handles all data operations related to Twitter tweets
@@ -65,5 +65,47 @@ export default class Tweets {
         } while (total < count);
 
         return tweets;
+    }
+
+    /**
+     * @param id The id of the tweet
+     * @param count The number of likes to fetch
+     * @param cursor The cursor to next batch
+     * @returns The list of likes of the tweet with the given id
+     */
+    public async likes(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
+        let likes: CursoredData<User> = {
+            list: [],
+            next: { value: cursor }
+        };
+        let total: number = 0;                                          // To store the total number of data fetched
+        let batchSize: number = 100;                                    // To store the number of data to fetch at once
+
+        // Fetching batch-wise, as long as total data fetched is less than required
+        do {
+            // For last batch, set batch size to amount of data remaining
+            /** 
+             * If the amount of data remaining to fetch ( = count - total) is <= batchSize, this implies this is the last batch.
+             * So the batch size is reduced to the amount of data remaining to fetch
+             */
+            batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
+
+            // Fetching a single batch
+            let data = await Rettiwt(this.cookie).tweets.getTweetLikers(id, batchSize, likes.next.value);
+
+            // If no additional data found
+            if (!data.list.length) {
+                break;
+            }
+
+            // Concatenating data
+            likes.list = likes.list.concat(data.list);
+            likes.next = data.next;
+
+            // Incrementing total data fetched
+            total = likes.list.length;
+        } while (total < count);
+
+        return likes;
     }
 }
