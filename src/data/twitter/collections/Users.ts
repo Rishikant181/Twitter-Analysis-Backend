@@ -74,4 +74,46 @@ export default class Users {
 
         return followers;
     }
+
+    /**
+     * @param id The id of the twitter user
+     * @param count The number of following to fetch
+     * @param cursor The cursor to next batch
+     * @returns The list of following of the twitter user with the given id
+     */
+    public async following(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
+        let following: CursoredData<User> = {
+            list: [],
+            next: { value: cursor }
+        };
+        let total: number = 0;                                          // To store the total number of data fetched
+        let batchSize: number = 100;                                    // To store the number of data to fetch at once
+
+        // Fetching batch-wise, as long as total data fetched is less than required
+        do {
+            // For last batch, set batch size to amount of data remaining
+            /** 
+             * If the amount of data remaining to fetch ( = count - total) is <= batchSize, this implies this is the last batch.
+             * So the batch size is reduced to the amount of data remaining to fetch
+             */
+            batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
+
+            // Fetching a single batch
+            let data = await Rettiwt(this.cookie).users.getUserFollowing(id, batchSize, following.next.value);
+
+            // If no additional data found
+            if (!data.list.length) {
+                break;
+            }
+
+            // Concatenating data
+            following.list = following.list.concat(data.list);
+            following.next = data.next;
+
+            // Incrementing total data fetched
+            total = following.list.length;
+        } while (total < count);
+
+        return following;
+    }
 }
