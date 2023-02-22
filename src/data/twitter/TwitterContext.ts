@@ -11,8 +11,11 @@ export default class TwitterContext {
     public tweets: Tweets;                                          // To store the collection from where to fetch twitter tweet data
     
     // MEMBER METHODS
-    constructor() {
-        this.users = new Users();
+    /**
+     * @param cookie The cookie to be used for authenticating
+     */
+    constructor(cookie: string = '') {
+        this.users = new Users(cookie);
         this.tweets = new Tweets();
     }
 }
