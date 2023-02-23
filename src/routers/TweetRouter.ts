@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { TweetFilter } from 'rettiwt-api';
 
 // DATA
-import TwitterContext from '../data/twitter/TwitterContext';
+import TwitterContext from '../data/Context';
 
 /**
  * @summary This router handles all operations related to Twitter tweets

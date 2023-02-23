@@ -2,7 +2,7 @@
 import { Router } from 'express';
 
 // DATA
-import TwitterContext from '../data/twitter/TwitterContext';
+import TwitterContext from '../data/Context';
 
 /**
  * @summary This router handles all operations related to Twitter user
