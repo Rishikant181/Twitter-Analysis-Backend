@@ -35,7 +35,7 @@ export default class Users {
 
     /**
      * @param id The id of the twitter user
-     * @param count The number of followers to fetch
+     * @param count The number of followers to fetch, must be >= 40 when no cursor is provided
      * @param cursor The cursor to next batch
      * @returns The list of follower of the twitter user with the given id
      */
@@ -77,7 +77,7 @@ export default class Users {
 
     /**
      * @param id The id of the twitter user
-     * @param count The number of following to fetch
+     * @param count The number of following to fetch, must be >= 40 when no cursor is provided
      * @param cursor The cursor to next batch
      * @returns The list of following of the twitter user with the given id
      */
@@ -119,7 +119,7 @@ export default class Users {
 
     /**
      * @param id The id of the twitter user
-     * @param count The number of liked tweets to fetch
+     * @param count The number of liked tweets to fetch, must be >= 40 when no cursor is provided
      * @param cursor The cursor to next batch
      * @returns The list of liked tweets of the twitter user with the given id
      */
