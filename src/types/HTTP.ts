@@ -1,3 +1,6 @@
+/**
+ * @summary Stores the HTTP error message to be sent to client
+ */
 export class HTTPError {
     // MEMBER DATA
     public status: number;                                              // To store HTTP status code
