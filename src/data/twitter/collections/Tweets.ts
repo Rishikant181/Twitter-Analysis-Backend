@@ -27,7 +27,7 @@ export default class Tweets {
 
     /**
      * @param query The search query for getting the tweets
-     * @param count The number of tweets to fetch
+     * @param count The number of tweets to fetch, must be >= 1
      * @param cursor The cursor to next batch
      * @returns The list of tweets matching the given query
      */
@@ -69,7 +69,7 @@ export default class Tweets {
 
     /**
      * @param id The id of the tweet
-     * @param count The number of likes to fetch
+     * @param count The number of likes to fetch, must be >= 10 when no cursor is provided
      * @param cursor The cursor to next batch
      * @returns The list of likes of the tweet with the given id
      */
@@ -111,7 +111,7 @@ export default class Tweets {
 
     /**
      * @param id The id of the tweet
-     * @param count The number of retweets to fetch
+     * @param count The number of retweets to fetch, must be >= 10 when no cursor is provided
      * @param cursor The cursor to next batch
      * @returns The list of retweets of the tweet with the given id
      */
