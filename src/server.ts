@@ -5,6 +5,9 @@ import express from 'express';
 import TweetRouter from './routers/TweetRouter';
 import UserRouter from './routers/UserRouter';
 
+// MIDDLEWARES
+import userErrorHandler from './middlewares/error/UserErrorHandler';
+
 // Creating new express app instance
 const app = express();
 
@@ -14,7 +17,7 @@ app.listen(3000, () => {
 });
 
 // Adding additional routers
-app.use('/users', UserRouter);
+app.use('/users', UserRouter, userErrorHandler);
 app.use('/tweets', TweetRouter);
 
 // Setting up test endpoint

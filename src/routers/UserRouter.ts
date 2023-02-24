@@ -1,12 +1,8 @@
 // PACKAGE LIBS
 import { Router } from 'express';
-import { ValidationErrors, DataErrors, AuthenticationErrors } from 'rettiwt-api';
 
 // DATA
 import TwitterContext from '../data/Context';
-
-// TYPES
-import { HTTPError } from '../types/HTTP';
 
 /**
  * @summary This router handles all operations related to Twitter user
@@ -19,20 +15,15 @@ const UserRouter = Router();
  * @returns The details of the Twitter user
  * @param id The id/username of the Twitter user whose details are to be fetched
  */
-UserRouter.get('/:id', (req, res) => {
+UserRouter.get('/:id', (req, res, next) => {
     // Getting query params
     const id: string = req.params.id;
 
     // Fetching data
-    new TwitterContext().users.details(req.params.id).then(data => {
+    new TwitterContext().users.details(id).then(data => {
         res.send(data);
     })
-    .catch((err: Error) => {
-        if (err.message == DataErrors.UserNotFound) {
-            res.status(404);
-            res.send(new HTTPError(err.message, [{ name: 'id', value: id }]));
-        }
-    });
+    .catch(err => next(err));
 });
 
 /** 
