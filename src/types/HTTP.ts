@@ -17,3 +17,25 @@ export class HTTPError {
         this.time = Date.now();
     }
 }
+
+/**
+ * @summary Stores the response to be sent back
+ */
+export class HTTPResponse<DataType> {
+    // MEMBER DATA
+    public success: boolean;                                            // To store if request was successful or not
+    public data?: DataType;                                             // To store the reponse data, if any
+    public error?: HTTPError;                                           // To store error if any
+
+    // MEMBER METHODS
+    /**
+     * @param success Whether the request was successful or not
+     * @param data The data to be returned, if any
+     * @param error The error, if any
+     */
+    constructor(success: boolean, data?: DataType, error?: HTTPError) {
+        this.success = success;
+        this.data = data;
+        this.error = error;
+    }
+}
