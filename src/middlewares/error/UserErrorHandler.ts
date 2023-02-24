@@ -8,10 +8,11 @@ import { HTTPError } from '../../types/HTTP';
 const userErrorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.message == DataErrors.UserNotFound) {
         res.status(404);
-        res.send(new HTTPError(err.message, [{ name: 'id', value: req.params.id }]));
+        res.send(new HTTPError(err.message));
     }
-
-    console.log(err);
+    else {
+        console.log(err);
+    }
 }
 
 export default userErrorHandler;
