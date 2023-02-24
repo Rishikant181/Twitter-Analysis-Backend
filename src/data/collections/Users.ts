@@ -1,5 +1,5 @@
 // PACKAGE LIBS
-import { Rettiwt, User, CursoredData, Tweet } from 'rettiwt-api';
+import { Rettiwt, User, CursoredData, Tweet, DataErrors } from 'rettiwt-api';
 
 /**
  * @summary Handles all data operations related to Twitter users
@@ -72,6 +72,11 @@ export default class Users {
             total = followers.list.length;
         } while (total < count);
 
+        // If no followers found
+        if (!followers.list.length) {
+            throw new Error(DataErrors.NoFollowsFound);
+        }
+
         return followers;
     }
 
@@ -114,6 +119,11 @@ export default class Users {
             total = following.list.length;
         } while (total < count);
 
+        // If no following found
+        if (!following.list.length) {
+            throw new Error(DataErrors.NoFollowsFound);
+        }
+
         return following;
     }
 
@@ -155,6 +165,11 @@ export default class Users {
             // Incrementing total data fetched
             total = likes.list.length;
         } while (total < count);
+
+        // If no likes found
+        if (!likes.list.length) {
+            throw new Error(DataErrors.NoLikedTweetsFound);
+        }
 
         return likes;
     }

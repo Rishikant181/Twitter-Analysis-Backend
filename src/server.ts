@@ -5,6 +5,10 @@ import express from 'express';
 import TweetRouter from './routers/TweetRouter';
 import UserRouter from './routers/UserRouter';
 
+// MIDDLEWARES
+import tweetErrorHandler from './middlewares/error/TweetError';
+import userErrorHandler from './middlewares/error/UserError';
+
 // Creating new express app instance
 const app = express();
 
@@ -14,8 +18,8 @@ app.listen(3000, () => {
 });
 
 // Adding additional routers
-app.use('/users', UserRouter);
-app.use('/tweets', TweetRouter);
+app.use('/tweets', TweetRouter, tweetErrorHandler);
+app.use('/users', UserRouter, userErrorHandler);
 
 // Setting up test endpoint
 app.get('/alive', (req, res) => {
