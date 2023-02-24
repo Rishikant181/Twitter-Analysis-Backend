@@ -1,5 +1,5 @@
 // PACKAGE LIBS
-import { Rettiwt, User, Tweet, TweetFilter, CursoredData } from 'rettiwt-api';
+import { Rettiwt, User, Tweet, TweetFilter, CursoredData, DataErrors } from 'rettiwt-api';
 
 /**
  * @summary Handles all data operations related to Twitter tweets
@@ -64,6 +64,11 @@ export default class Tweets {
             total = tweets.list.length;
         } while (total < count);
 
+        // If no tweets found
+        if (!tweets.list.length) {
+            throw new Error(DataErrors.NoTweetsFound);
+        }
+
         return tweets;
     }
 
@@ -106,6 +111,11 @@ export default class Tweets {
             total = likes.list.length;
         } while (total < count);
 
+        // If no likes found
+        if (!likes.list.length) {
+            throw new Error(DataErrors.NoLikersFound);
+        }
+
         return likes;
     }
 
@@ -147,6 +157,11 @@ export default class Tweets {
             // Incrementing total data fetched
             total = retweets.list.length;
         } while (total < count);
+
+        // If no retweets found
+        if (!retweets.list.length) {
+            throw new Error(DataErrors.NoRetweetersFound);
+        }
 
         return retweets;
     }
