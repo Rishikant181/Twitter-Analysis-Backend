@@ -1,9 +1,12 @@
 // PACKAGE LIBS
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { TweetFilter } from 'rettiwt-api';
 
 // DATA
 import TwitterContext from '../data/Context';
+
+// TYPES
+import { HTTPResponse } from '../types/HTTP';
 
 /**
  * @summary This router handles all operations related to Twitter tweets
@@ -18,21 +21,30 @@ const TweetRouter = Router();
  * @query cursor The cursor to the batch of tweets to fetch
  * @query query The search query to use to search tweets, strigified JSON, then encoded as URI component. Query type = TweetFilter of rettiwt-api
  */
-TweetRouter.get('/', async (req, res) => {
+TweetRouter.get('/', (req: Request, res: Response) => {
     // Getting query params
     const count: number = req.query.number ? Number(req.query.number) : 10;
     const cursor: string = req.query.cursor ? String(req.query.cursor) : '';
     const query: TweetFilter = JSON.parse(decodeURIComponent(String(req.query.query)));
 
-    res.send(await new TwitterContext(req.headers.cookie).tweets.search(query, count, cursor));
+    // Fetching data
+    new TwitterContext(req.headers.cookie).tweets.search(query, count, cursor).then(data => {
+        res.send(new HTTPResponse<typeof data>(true, data));
+    });
 });
 
 /** 
  * @returns The details of the tweet
  * @param id The id of the tweet whose details are to be fetched
  */
-TweetRouter.get('/:id', async (req, res) => {
-    res.send(await new TwitterContext().tweets.details(req.params.id));
+TweetRouter.get('/:id', (req: Request, res: Response) => {
+    // Getting query params
+    const id: string = req.params.id;
+
+    // Fetching data
+    new TwitterContext().tweets.details(id).then(data => {
+        res.send(new HTTPResponse<typeof data>(true, data));
+    });
 });
 
 /** 
@@ -41,13 +53,16 @@ TweetRouter.get('/:id', async (req, res) => {
  * @query count The number of likes to fetch, must be >= 10 when no cursor is provided
  * @query cursor The cursor to the batch of likes to fetch
  */
-TweetRouter.get('/:id/likes', async (req, res) => {
+TweetRouter.get('/:id/likes', (req: Request, res: Response) => {
     // Getting query params
     const id: string = String(req.params.id);
     const count: number = req.query.number ? Number(req.query.number) : 10;
     const cursor: string = req.query.cursor ? String(req.query.cursor) : '';
 
-    res.send(await new TwitterContext(req.headers.cookie).tweets.likes(id, count, cursor));
+    // Fetching data
+    new TwitterContext(req.headers.cookie).tweets.likes(id, count, cursor).then(data => {
+        res.send(new HTTPResponse<typeof data>(true, data));
+    });
 });
 
 /** 
@@ -56,13 +71,16 @@ TweetRouter.get('/:id/likes', async (req, res) => {
  * @query count The number of retweets to fetch, must be >= 10 when no cursor is provided
  * @query cursor The cursor to the batch of retweets to fetch
  */
-TweetRouter.get('/:id/retweets', async (req, res) => {
+TweetRouter.get('/:id/retweets', (req: Request, res: Response) => {
     // Getting query params
     const id: string = String(req.params.id);
     const count: number = req.query.number ? Number(req.query.number) : 10;
     const cursor: string = req.query.cursor ? String(req.query.cursor) : '';
 
-    res.send(await new TwitterContext(req.headers.cookie).tweets.retweets(id, count, cursor));
+    // Fetching data
+    new TwitterContext(req.headers.cookie).tweets.retweets(id, count, cursor).then(data => {
+        res.send(new HTTPResponse<typeof data>(true, data));
+    });
 });
 
 export default TweetRouter;
