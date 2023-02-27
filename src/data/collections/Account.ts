@@ -1,4 +1,4 @@
-// PACKAGES
+// PACKAGE LIBS
 import { Rettiwt } from 'rettiwt-api';
 
 /**
