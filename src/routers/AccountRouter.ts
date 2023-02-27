@@ -11,6 +11,14 @@ const AccountRouter = Router();
 
 // ENDPOINTS
 
+/** 
+ * @body {
+ *      email: The email of the Twitter account
+ *      userName: The username of the user associated with the account
+ *      password: The password to the twitter account
+ * }
+ * @returns The cookie after logging in to twitter
+ */
 AccountRouter.post('/login', (req: Request, res: Response, next: NextFunction) => {
     // Parsing the request body
     const data: {
