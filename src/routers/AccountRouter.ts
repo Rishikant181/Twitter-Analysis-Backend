@@ -35,7 +35,8 @@ AccountRouter.post('/login', (req: Request, res: Response, next: NextFunction) =
     // Logging in to twitter
     new TwitterContext().account.login(email, userName, password).then(data => {
         res.send(data);
-    });
+    })
+    .catch(err => next(err));
 });
 
 export default AccountRouter;

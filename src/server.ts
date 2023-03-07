@@ -7,6 +7,7 @@ import UserRouter from './routers/UserRouter';
 import AccountRouter from './routers/AccountRouter';
 
 // MIDDLEWARES
+import accountErrorHandler from './middlewares/error/AccountError';
 import tweetErrorHandler from './middlewares/error/TweetError';
 import userErrorHandler from './middlewares/error/UserError';
 
@@ -24,7 +25,7 @@ app.listen(3000, () => {
 // Adding additional routers
 app.use('/tweets', TweetRouter, tweetErrorHandler);
 app.use('/users', UserRouter, userErrorHandler);
-app.use('/account', AccountRouter);
+app.use('/account', AccountRouter, accountErrorHandler);
 
 // Setting up test endpoint
 app.get('/alive', (req, res) => {
