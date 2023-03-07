@@ -25,6 +25,6 @@
 	},
 	"dependencies": {
 		"express": "4.18.2",
-		"rettiwt-api": "^1.1.0"
+		"rettiwt-api": "^1.1.1"
 	}
 }
