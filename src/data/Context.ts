@@ -20,6 +20,5 @@ export default class TwitterContext {
         this.users = new Users(cookie);
         this.tweets = new Tweets(cookie);
         this.account = new Account();
-
     }
 }
