@@ -1,4 +1,7 @@
+// PACKAGES
 import { Test, TestingModule } from '@nestjs/testing';
+
+// SERVICES
 import { UserService } from './user.service';
 
 describe('UserService', () => {
