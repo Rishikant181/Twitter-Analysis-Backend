@@ -1,12 +1,21 @@
 // PACKAGE
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
 import { Rettiwt } from 'rettiwt-api';
 
 // ENTITIES
 import { User } from './entities/user.entity';
 
-@Injectable()
+/**
+ * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.
+ */
+@Injectable({ scope: Scope.REQUEST })
 export class UserService {
+    /**
+     * @param request The oncoming HTTP request from the client.
+     */
+    constructor(@Inject(REQUEST) private request: Request) {}
+
 	/**
 	 * @param id The id/username of the twitter user.
 	 * @returns The details of the twitter user with the given id/username.
