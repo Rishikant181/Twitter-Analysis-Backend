@@ -1,37 +1,50 @@
-// PACKAGE LIBS
-import { Rettiwt, User, Tweet, TweetFilter, CursoredData, DataErrors } from 'rettiwt-api';
+// PACKAGES
+import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Rettiwt, DataErrors } from 'rettiwt-api';
+
+// ENTITIES
+import { Tweet, CursoredData } from './entities/tweet.entity';
+import { User } from '../user/entities/user.entity';
+
+// DTOs
+import { TweetQueryDto } from './dto/tweet-query.dto';
 
 /**
- * @summary Handles all data operations related to Twitter tweets
+ * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.
  */
-export default class Tweets {
-    // MEMBER DATA
-    private cookie: string;                                                 // To store the cookie to use for authenticating rettiwt
+@Injectable({ scope: Scope.REQUEST })
+export class TweetService {
+    /** The cookie string to use for authenticatin Rettiwt instance. */
+    private cookie: string;
 
-    // MEMBER METHODS
     /**
-     * @param cookie The cookie to be used for authenticating
+     * @param request The oncoming HTTP request from the client.
      */
-    constructor(cookie: string = '') {
-        this.cookie = cookie;
+    constructor(@Inject(REQUEST) private request: Request) {
+        this.cookie = request.headers['cookie'];
     }
 
     /**
-     * @param id The id of the tweet
-     * @returns The details of the tweet with the given id
+     * Get the details of the Tweet with the given id/username.
+     * 
+     * @param id The id of the tweet.
+     * @returns The details of the tweet with the given id.
      */
-    public async details(id: string): Promise<Tweet> {
+    async find(id: string): Promise<Tweet> {
         // Fetching and returning the details of the tweet with the given id
         return await Rettiwt().tweets.getTweetById(id);
     }
 
     /**
-     * @param query The search query for getting the tweets
-     * @param count The number of tweets to fetch, must be >= 1
-     * @param cursor The cursor to next batch
-     * @returns The list of tweets matching the given query
+     * Get the list of tweets matching the given filter.
+     * 
+     * @param query The search query for getting the tweets.
+     * @param count The number of tweets to fetch, must be >= 1.
+     * @param cursor The cursor to next batch.
+     * @returns The list of tweets matching the given query.
      */
-    public async search(query: TweetFilter, count: number, cursor: string = ''): Promise<CursoredData<Tweet>> {
+    async search(query: TweetQueryDto, count: number, cursor: string = ''): Promise<CursoredData<Tweet>> {
         let tweets: CursoredData<Tweet> = {
             list: [],
             next: { value: cursor }
@@ -73,12 +86,14 @@ export default class Tweets {
     }
 
     /**
-     * @param id The id of the tweet
-     * @param count The number of likes to fetch, must be >= 10 when no cursor is provided
-     * @param cursor The cursor to next batch
-     * @returns The list of likes of the tweet with the given id
+     * Get the list of likes of a Tweet.
+     * 
+     * @param id The id of the tweet.
+     * @param count The number of likes to fetch, must be >= 10 when no cursor is provided.
+     * @param cursor The cursor to next batch.
+     * @returns The list of likes of the tweet with the given id.
      */
-    public async likes(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
+    async likes(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
         let likes: CursoredData<User> = {
             list: [],
             next: { value: cursor }
@@ -120,12 +135,14 @@ export default class Tweets {
     }
 
     /**
-     * @param id The id of the tweet
-     * @param count The number of retweets to fetch, must be >= 10 when no cursor is provided
-     * @param cursor The cursor to next batch
-     * @returns The list of retweets of the tweet with the given id
+     * Get the list of retweets of the Tweets.
+     * 
+     * @param id The id of the tweet.
+     * @param count The number of retweets to fetch, must be >= 10 when no cursor is provided.
+     * @param cursor The cursor to next batch.
+     * @returns The list of retweets of the tweet with the given id.
      */
-    public async retweets(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
+    async retweets(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
         let retweets: CursoredData<User> = {
             list: [],
             next: { value: cursor }

@@ -1,45 +1,61 @@
-// PACKAGE LIBS
-import { Rettiwt, User, CursoredData, Tweet, DataErrors } from 'rettiwt-api';
+// PACKAGE
+import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Rettiwt, DataErrors } from 'rettiwt-api';
+
+// ENTITIES
+import { User, CursoredData } from './entities/user.entity';
+import { Tweet } from '../tweet/entities/tweet.entity';
 
 /**
- * @summary Handles all data operations related to Twitter users
+ * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.
  */
-export default class Users {
-    // MEMBER DATA
-    private cookie: string;                                                 // To store the cookie to use for authenticating rettiwt
-
-    // MEMBER METHODS
+@Injectable({ scope: Scope.REQUEST })
+export class UserService {
+    /** The cookie string to use for authenticatin Rettiwt instance. */
+    private cookie: string;
+    
     /**
-     * @param cookie The cookie to be used for authenticating
+     * @param request The oncoming HTTP request from the client.
      */
-    constructor(cookie: string = '') {
-        this.cookie = cookie;
+    constructor(@Inject(REQUEST) private request: Request) {
+        this.cookie = request.headers['cookie'];
     }
 
-    /**
-     * @param id The id of the Twitter user, can be username or id
-     * @returns The details of the Twitter use with the given id
-     */
-    public async details(id: string): Promise<User> {
-        // If username is provided
+	/**
+     * Get the details of the Twitter user with the given id/username.
+     * 
+	 * @param id The id/username of the twitter user.
+	 * @returns The details of the twitter user with the given id/username.
+	 */
+	async find(id: string): Promise<User> {
+		// If username is provided
         if(isNaN(Number(id))) {
             // Fetching and returning the details using username
-            return await Rettiwt().users.getUserDetails(id);
+            return Rettiwt().users.getUserDetails(id)
+            .catch(err => {
+                throw new HttpException(DataErrors.UserNotFound, HttpStatus.NOT_FOUND)
+            });
         }
         // If id is provided
         else {
             // Fetching and returning the details using id
-            return await Rettiwt().users.getUserDetailsById(id);
+            return Rettiwt().users.getUserDetailsById(id)
+            .catch(err => {
+                throw new HttpException(DataErrors.UserNotFound, HttpStatus.NOT_FOUND)
+            });
         }
-    }
+	}
 
     /**
-     * @param id The id of the twitter user
-     * @param count The number of followers to fetch, must be >= 40 when no cursor is provided
-     * @param cursor The cursor to next batch
-     * @returns The list of follower of the twitter user with the given id
+     * Get the followers of the Twitter user with the given id
+     * 
+     * @param id The id of the twitter user.
+     * @param count The number of followers to fetch, must be >= 40 when no cursor is provided.
+     * @param cursor The cursor to next batch.
+     * @returns The list of follower of the twitter user with the given id.
      */
-    public async followers(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
+    async findFollowers(id: string, count: number, cursor: string): Promise<CursoredData<User>> {
         let followers: CursoredData<User> = {
             list: [],
             next: { value: cursor }
@@ -74,19 +90,21 @@ export default class Users {
 
         // If no followers found
         if (!followers.list.length) {
-            throw new Error(DataErrors.NoFollowsFound);
+            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
         }
 
         return followers;
     }
 
     /**
-     * @param id The id of the twitter user
-     * @param count The number of following to fetch, must be >= 40 when no cursor is provided
-     * @param cursor The cursor to next batch
-     * @returns The list of following of the twitter user with the given id
+     * Get the following of the Twitter user with the given id
+     * 
+     * @param id The id of the twitter user.
+     * @param count The number of following to fetch, must be >= 40 when no cursor is provided.
+     * @param cursor The cursor to next batch.
+     * @returns The list of following of the twitter user with the given id.
      */
-    public async following(id: string, count: number, cursor: string = ''): Promise<CursoredData<User>> {
+    async findFollowing(id: string, count: number, cursor: string): Promise<CursoredData<User>> {
         let following: CursoredData<User> = {
             list: [],
             next: { value: cursor }
@@ -121,19 +139,21 @@ export default class Users {
 
         // If no following found
         if (!following.list.length) {
-            throw new Error(DataErrors.NoFollowsFound);
+            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
         }
 
         return following;
     }
 
     /**
-     * @param id The id of the twitter user
-     * @param count The number of liked tweets to fetch, must be >= 40 when no cursor is provided
-     * @param cursor The cursor to next batch
-     * @returns The list of liked tweets of the twitter user with the given id
+     * Get the list of tweets liked by the Twitter user with the given id.
+     * 
+     * @param id The id of the twitter user.
+     * @param count The number of liked tweets to fetch, must be >= 40 when no cursor is provided.
+     * @param cursor The cursor to next batch.
+     * @returns The list of liked tweets of the twitter user with the given id.
      */
-    public async likes(id: string, count: number, cursor: string = ''): Promise<CursoredData<Tweet>> {
+    public async findLikes(id: string, count: number, cursor: string = ''): Promise<CursoredData<Tweet>> {
         let likes: CursoredData<Tweet> = {
             list: [],
             next: { value: cursor }
@@ -168,7 +188,7 @@ export default class Users {
 
         // If no likes found
         if (!likes.list.length) {
-            throw new Error(DataErrors.NoLikedTweetsFound);
+            throw new HttpException(DataErrors.NoLikedTweetsFound, HttpStatus.NOT_FOUND);
         }
 
         return likes;
