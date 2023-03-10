@@ -6,7 +6,8 @@ import { Query } from '@nestjs/common/decorators';
 import { UserService } from './user.service';
 
 // ENTITIES
-import { User, CursoredData, Tweet } from './entities/user.entity';
+import { User, CursoredData } from './entities/user.entity';
+import { Tweet } from '../tweet/entities/tweet.entity';
 
 @Controller('user')
 export class UserController {
