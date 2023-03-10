@@ -31,7 +31,7 @@ export class UserService {
 	 */
 	async find(id: string): Promise<User> {
         /**
-         * @remarks There might be a
+         * @remarks There might be a better way to do this.
          */
 		// If username is provided
         if(isNaN(Number(id))) {
