@@ -1,6 +1,6 @@
 // PACKAGES
 import { Controller, Get, Param } from '@nestjs/common';
-import { Query } from '@nestjs/common/decorators';
+import { Body, Post, Query } from '@nestjs/common/decorators';
 
 // SERVICES
 import { TweetService } from './tweet.service';
@@ -17,9 +17,9 @@ import { TweetQueryDto } from './dto/tweet-query.dto';
 export class TweetController {
 	constructor(private readonly tweetService: TweetService) { }
 	
-	@Get('/')
-	findTweets(@Query('query') query: string, @Query('count') count?: number, @Query('cursor') cursor?: string): Promise<CursoredData<Tweet>> {
-		return this.tweetService.search(JSON.parse(query), count, cursor);
+	@Post('/')
+	findTweets(@Body() query: TweetQueryDto, @Query('count') count?: number, @Query('cursor') cursor?: string): Promise<CursoredData<Tweet>> {
+		return this.tweetService.search(query, count, cursor);
 	}
 
 	@Get(':id')
