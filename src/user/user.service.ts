@@ -32,12 +32,18 @@ export class UserService {
 		// If username is provided
         if(isNaN(Number(id))) {
             // Fetching and returning the details using username
-            return Rettiwt().users.getUserDetails(id);
+            return Rettiwt().users.getUserDetails(id)
+            .catch(err => {
+                throw new HttpException(DataErrors.UserNotFound, HttpStatus.NOT_FOUND)
+            });
         }
         // If id is provided
         else {
             // Fetching and returning the details using id
-            return Rettiwt().users.getUserDetailsById(id);
+            return Rettiwt().users.getUserDetailsById(id)
+            .catch(err => {
+                throw new HttpException(DataErrors.UserNotFound, HttpStatus.NOT_FOUND)
+            });
         }
 	}
 
