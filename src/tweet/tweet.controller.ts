@@ -6,8 +6,9 @@ import { Query } from '@nestjs/common/decorators';
 import { TweetService } from './tweet.service';
 
 // ENTITIES
-import { Tweet, CursoredData } from './entities/tweet.entity';
+import { Tweet } from './entities/tweet.entity';
 import { User } from '../user/entities/user.entity';
+import { CursoredData } from '../dto/common.dto';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';

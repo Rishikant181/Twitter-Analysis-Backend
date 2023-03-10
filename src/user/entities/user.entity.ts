@@ -1,1 +1,1 @@
-export { User, CursoredData, Cursor } from 'rettiwt-api';
+export { User } from 'rettiwt-api';

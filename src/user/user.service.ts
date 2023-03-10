@@ -4,8 +4,9 @@ import { REQUEST } from '@nestjs/core';
 import { Rettiwt, DataErrors } from 'rettiwt-api';
 
 // ENTITIES
-import { User, CursoredData } from './entities/user.entity';
+import { User } from './entities/user.entity';
 import { Tweet } from '../tweet/entities/tweet.entity';
+import { CursoredData } from '../dto/common.dto';
 
 /**
  * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.

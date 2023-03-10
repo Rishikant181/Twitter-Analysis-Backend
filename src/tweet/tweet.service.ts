@@ -4,8 +4,9 @@ import { REQUEST } from '@nestjs/core';
 import { Rettiwt, DataErrors } from 'rettiwt-api';
 
 // ENTITIES
-import { Tweet, CursoredData } from './entities/tweet.entity';
+import { Tweet } from './entities/tweet.entity';
 import { User } from '../user/entities/user.entity';
+import { CursoredData } from '../dto/common.dto';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';
