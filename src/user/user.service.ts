@@ -30,20 +30,33 @@ export class UserService {
 	 * @returns The details of the twitter user with the given id/username.
 	 */
 	async find(id: string): Promise<User> {
+        /**
+         * @remarks There might be a
+         */
 		// If username is provided
         if(isNaN(Number(id))) {
             // Fetching and returning the details using username
             return Rettiwt().users.getUserDetails(id)
-            .catch(err => {
-                throw new HttpException(DataErrors.UserNotFound, HttpStatus.NOT_FOUND)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.UserNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
             });
         }
         // If id is provided
         else {
             // Fetching and returning the details using id
             return Rettiwt().users.getUserDetailsById(id)
-            .catch(err => {
-                throw new HttpException(DataErrors.UserNotFound, HttpStatus.NOT_FOUND)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.UserNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
             });
         }
 	}
@@ -74,7 +87,15 @@ export class UserService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserFollowers(id, batchSize, followers.next.value);
+            let data = await Rettiwt(this.cookie).users.getUserFollowers(id, batchSize, followers.next.value)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.UserNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
+            });
 
             // If no additional data found
             if (!data.list.length) {
@@ -123,7 +144,15 @@ export class UserService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserFollowing(id, batchSize, following.next.value);
+            let data = await Rettiwt(this.cookie).users.getUserFollowing(id, batchSize, following.next.value)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.UserNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
+            });
 
             // If no additional data found
             if (!data.list.length) {
@@ -172,7 +201,15 @@ export class UserService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserLikes(id, batchSize, likes.next.value);
+            let data = await Rettiwt(this.cookie).users.getUserLikes(id, batchSize, likes.next.value)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.UserNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
+            });
 
             // If no additional data found
             if (!data.list.length) {

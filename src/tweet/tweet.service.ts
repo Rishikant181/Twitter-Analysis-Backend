@@ -34,7 +34,15 @@ export class TweetService {
      */
     async find(id: string): Promise<Tweet> {
         // Fetching and returning the details of the tweet with the given id
-        return await Rettiwt().tweets.getTweetById(id);
+        return await Rettiwt().tweets.getTweetById(id)
+        .catch((err: Error) => {
+            if (err.message == DataErrors.TweetNotFound) {
+                throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+            }
+            else {
+                throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+            }
+        });
     }
 
     /**
@@ -63,7 +71,15 @@ export class TweetService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt().tweets.getTweets(query, batchSize, tweets.next.value);
+            let data = await Rettiwt().tweets.getTweets(query, batchSize, tweets.next.value)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.TweetNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
+            });
 
             // If no additional data found
             if (!data.list.length) {
@@ -80,7 +96,7 @@ export class TweetService {
 
         // If no tweets found
         if (!tweets.list.length) {
-            throw new Error(DataErrors.NoTweetsFound);
+            throw new HttpException(DataErrors.NoTweetsFound, HttpStatus.NOT_FOUND);
         }
 
         return tweets;
@@ -112,7 +128,15 @@ export class TweetService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).tweets.getTweetLikers(id, batchSize, likes.next.value);
+            let data = await Rettiwt(this.cookie).tweets.getTweetLikers(id, batchSize, likes.next.value)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.TweetNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
+            });
 
             // If no additional data found
             if (!data.list.length) {
@@ -129,7 +153,7 @@ export class TweetService {
 
         // If no likes found
         if (!likes.list.length) {
-            throw new Error(DataErrors.NoLikersFound);
+            throw new HttpException(DataErrors.NoLikersFound, HttpStatus.NOT_FOUND);
         }
 
         return likes;
@@ -161,7 +185,15 @@ export class TweetService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).tweets.getTweetRetweeters(id, batchSize, retweets.next.value);
+            let data = await Rettiwt(this.cookie).tweets.getTweetRetweeters(id, batchSize, retweets.next.value)
+            .catch((err: Error) => {
+                if (err.message == DataErrors.TweetNotFound) {
+                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+                }
+                else {
+                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+                }
+            });
 
             // If no additional data found
             if (!data.list.length) {
@@ -178,7 +210,7 @@ export class TweetService {
 
         // If no retweets found
         if (!retweets.list.length) {
-            throw new Error(DataErrors.NoRetweetersFound);
+            throw new HttpException(DataErrors.NoRetweetersFound, HttpStatus.NOT_FOUND);
         }
 
         return retweets;
