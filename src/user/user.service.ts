@@ -1,8 +1,6 @@
 // PACKAGE
-import { Inject, Injectable, Scope } from '@nestjs/common';
+import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { HttpException } from '@nestjs/common/exceptions';
-import { HttpStatus } from '@nestjs/common/enums';
 import { Rettiwt, DataErrors } from 'rettiwt-api';
 
 // ENTITIES
@@ -25,6 +23,8 @@ export class UserService {
     }
 
 	/**
+     * Get the details of the Twitter user with the given id/username.
+     * 
 	 * @param id The id/username of the twitter user.
 	 * @returns The details of the twitter user with the given id/username.
 	 */
