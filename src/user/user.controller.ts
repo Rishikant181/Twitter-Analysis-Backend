@@ -1,6 +1,5 @@
 // PACKAGE
-import { Controller, Get, Param } from '@nestjs/common';
-import { Query } from '@nestjs/common/decorators';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 
 // SERVICES
 import { UserService } from './user.service';

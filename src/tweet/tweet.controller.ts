@@ -1,6 +1,5 @@
 // PACKAGES
-import { Controller, Get, Param } from '@nestjs/common';
-import { Body, Post, Query } from '@nestjs/common/decorators';
+import { Body, Post, Query, Controller, Get, Param } from '@nestjs/common';
 
 // SERVICES
 import { TweetService } from './tweet.service';
