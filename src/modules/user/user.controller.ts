@@ -7,7 +7,7 @@ import { UserService } from './user.service';
 // ENTITIES
 import { User } from './entities/user.entity';
 import { Tweet } from '../tweet/entities/tweet.entity';
-import { CursoredData } from '../dto/common.dto';
+import { CursoredData } from '../../dtos/cursored-data.dto';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';
