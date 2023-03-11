@@ -9,6 +9,9 @@ import { User } from './entities/user.entity';
 import { Tweet } from '../tweet/entities/tweet.entity';
 import { CursoredData } from '../dto/common.dto';
 
+// DTOs
+import { UserListArgsDto } from './dto/user-list-args.dto';
+
 @Controller('user')
 export class UserController {
 	constructor(private readonly userService: UserService) { }
@@ -19,17 +22,17 @@ export class UserController {
 	}
 
 	@Get(':id/followers')
-	followers(@Param('id') id: string, @Query('count') count?: number, @Query('cursor') cursor?: string): Promise<CursoredData<User>> {
-		return this.userService.findFollowers(id, count, cursor);
+	followers(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<User>> {
+		return this.userService.findFollowers(id, args.count, args.cursor);
 	}
 
 	@Get(':id/following')
-	following(@Param('id') id: string, @Query('count') count?: number, @Query('cursor') cursor?: string): Promise<CursoredData<User>> {
-		return this.userService.findFollowing(id, count, cursor);
+	following(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<User>> {
+		return this.userService.findFollowing(id, args.count, args.cursor);
 	}
 
 	@Get(':id/likes')
-	likes(@Param('id') id: string, @Query('count') count?: number, @Query('cursor') cursor?: string): Promise<CursoredData<Tweet>> {
-		return this.userService.findLikes(id, count, cursor);
+	likes(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<Tweet>> {
+		return this.userService.findLikes(id, args.count, args.cursor);
 	}
 }
