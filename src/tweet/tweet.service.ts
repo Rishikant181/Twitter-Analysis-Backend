@@ -1,7 +1,7 @@
 // PACKAGES
 import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt } from 'rettiwt-api';
+import { Rettiwt, DataErrors } from 'rettiwt-api';
 
 // ENTITIES
 import { Tweet } from './entities/tweet.entity';
@@ -78,6 +78,11 @@ export class TweetService {
             total = tweets.list.length;
         } while (total < count);
 
+        // If no tweets found
+        if (!tweets.list.length) {
+            throw new HttpException(DataErrors.NoTweetsFound, HttpStatus.NOT_FOUND);
+        }
+
         return tweets;
     }
 
@@ -122,6 +127,11 @@ export class TweetService {
             total = likes.list.length;
         } while (total < count);
 
+        // If no likes found
+        if (!likes.list.length) {
+            throw new HttpException(DataErrors.NoLikersFound, HttpStatus.NOT_FOUND);
+        }
+
         return likes;
     }
 
@@ -165,6 +175,11 @@ export class TweetService {
             // Incrementing total data fetched
             total = retweets.list.length;
         } while (total < count);
+
+        // If no retweets found
+        if (!retweets.list.length) {
+            throw new HttpException(DataErrors.NoRetweetersFound, HttpStatus.NOT_FOUND);
+        }
 
         return retweets;
     }

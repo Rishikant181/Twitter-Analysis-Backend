@@ -1,7 +1,7 @@
 // PACKAGE
 import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt } from 'rettiwt-api';
+import { Rettiwt, DataErrors } from 'rettiwt-api';
 
 // ENTITIES
 import { User } from './entities/user.entity';
@@ -86,6 +86,11 @@ export class UserService {
             total = followers.list.length;
         } while (total < count);
 
+        // If no followers found
+        if (!followers.list.length) {
+            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
+        }
+
         return followers;
     }
 
@@ -130,6 +135,11 @@ export class UserService {
             total = following.list.length;
         } while (total < count);
 
+        // If no following found
+        if (!following.list.length) {
+            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
+        }
+
         return following;
     }
 
@@ -173,6 +183,11 @@ export class UserService {
             // Incrementing total data fetched
             total = likes.list.length;
         } while (total < count);
+
+        // If no likes found
+        if (!likes.list.length) {
+            throw new HttpException(DataErrors.NoLikedTweetsFound, HttpStatus.NOT_FOUND);
+        }
 
         return likes;
     }
