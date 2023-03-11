@@ -1,9 +1,11 @@
 // PACKAGES
-import { IsNumber, IsString, IsOptional, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsString, IsOptional, Min } from 'class-validator';
 
 export class TweetListArgsDto {
     /** The number of data items to fetch. */
-    @IsNumber()
+    @Type(() => Number)
+    @IsInt()
     @IsOptional()
     @Min(10)
     count?: number = 10;
