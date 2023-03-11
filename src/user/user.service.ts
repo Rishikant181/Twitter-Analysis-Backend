@@ -1,5 +1,5 @@
 // PACKAGE
-import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Rettiwt, DataErrors } from 'rettiwt-api';
 
@@ -88,7 +88,7 @@ export class UserService {
 
         // If no followers found
         if (!followers.list.length) {
-            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoFollowsFound);
         }
 
         return followers;
@@ -137,7 +137,7 @@ export class UserService {
 
         // If no following found
         if (!following.list.length) {
-            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoFollowsFound);
         }
 
         return following;
@@ -186,7 +186,7 @@ export class UserService {
 
         // If no likes found
         if (!likes.list.length) {
-            throw new HttpException(DataErrors.NoLikedTweetsFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoLikedTweetsFound);
         }
 
         return likes;

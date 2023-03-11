@@ -1,5 +1,5 @@
 // PACKAGES
-import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Rettiwt, DataErrors } from 'rettiwt-api';
 
@@ -80,7 +80,7 @@ export class TweetService {
 
         // If no tweets found
         if (!tweets.list.length) {
-            throw new HttpException(DataErrors.NoTweetsFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoTweetsFound);
         }
 
         return tweets;
@@ -129,7 +129,7 @@ export class TweetService {
 
         // If no likes found
         if (!likes.list.length) {
-            throw new HttpException(DataErrors.NoLikersFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoLikersFound);
         }
 
         return likes;
@@ -178,7 +178,7 @@ export class TweetService {
 
         // If no retweets found
         if (!retweets.list.length) {
-            throw new HttpException(DataErrors.NoRetweetersFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoRetweetersFound);
         }
 
         return retweets;
