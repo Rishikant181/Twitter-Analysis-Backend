@@ -1,5 +1,5 @@
 // PACKAGES
-import { Body, Post, Query, Controller, Get, Param } from '@nestjs/common';
+import { Body, Post, Query, Controller, Get, Param, UseFilters } from '@nestjs/common';
 
 // SERVICES
 import { TweetService } from './tweet.service';
@@ -7,13 +7,17 @@ import { TweetService } from './tweet.service';
 // ENTITIES
 import { Tweet } from './entities/tweet.entity';
 import { User } from '../user/entities/user.entity';
-import { CursoredData } from '../dto/common.dto';
+import { CursoredData } from '../dtos/cursored-data.dto';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';
 import { TweetListArgsDto } from './dto/tweet-list-args.dto';
 
+// FILTERS
+import { TwitterErrorFilter } from 'src/filters/twitter-error.filter';
+
 @Controller('tweet')
+@UseFilters(new TwitterErrorFilter())
 export class TweetController {
 	constructor(private readonly tweetService: TweetService) { }
 	

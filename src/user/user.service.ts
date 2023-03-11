@@ -1,12 +1,12 @@
 // PACKAGE
-import { Inject, Injectable, Scope, HttpException, HttpStatus } from '@nestjs/common';
+import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Rettiwt, DataErrors } from 'rettiwt-api';
 
 // ENTITIES
 import { User } from './entities/user.entity';
 import { Tweet } from '../tweet/entities/tweet.entity';
-import { CursoredData } from '../dto/common.dto';
+import { CursoredData } from '../dtos/cursored-data.dto';
 
 /**
  * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.
@@ -36,28 +36,12 @@ export class UserService {
 		// If username is provided
         if(isNaN(Number(id))) {
             // Fetching and returning the details using username
-            return Rettiwt().users.getUserDetails(id)
-            .catch((err: Error) => {
-                if (err.message == DataErrors.UserNotFound) {
-                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
-                }
-                else {
-                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
-                }
-            });
+            return Rettiwt().users.getUserDetails(id);
         }
         // If id is provided
         else {
             // Fetching and returning the details using id
-            return Rettiwt().users.getUserDetailsById(id)
-            .catch((err: Error) => {
-                if (err.message == DataErrors.UserNotFound) {
-                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
-                }
-                else {
-                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
-                }
-            });
+            return Rettiwt().users.getUserDetailsById(id);
         }
 	}
 
@@ -87,15 +71,7 @@ export class UserService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserFollowers(id, batchSize, followers.next.value)
-            .catch((err: Error) => {
-                if (err.message == DataErrors.UserNotFound) {
-                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
-                }
-                else {
-                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
-                }
-            });
+            let data = await Rettiwt(this.cookie).users.getUserFollowers(id, batchSize, followers.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -112,7 +88,7 @@ export class UserService {
 
         // If no followers found
         if (!followers.list.length) {
-            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoFollowsFound);
         }
 
         return followers;
@@ -144,15 +120,7 @@ export class UserService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserFollowing(id, batchSize, following.next.value)
-            .catch((err: Error) => {
-                if (err.message == DataErrors.UserNotFound) {
-                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
-                }
-                else {
-                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
-                }
-            });
+            let data = await Rettiwt(this.cookie).users.getUserFollowing(id, batchSize, following.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -169,7 +137,7 @@ export class UserService {
 
         // If no following found
         if (!following.list.length) {
-            throw new HttpException(DataErrors.NoFollowsFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoFollowsFound);
         }
 
         return following;
@@ -201,15 +169,7 @@ export class UserService {
             batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserLikes(id, batchSize, likes.next.value)
-            .catch((err: Error) => {
-                if (err.message == DataErrors.UserNotFound) {
-                    throw new HttpException(err.message, HttpStatus.NOT_FOUND);
-                }
-                else {
-                    throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
-                }
-            });
+            let data = await Rettiwt(this.cookie).users.getUserLikes(id, batchSize, likes.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -226,7 +186,7 @@ export class UserService {
 
         // If no likes found
         if (!likes.list.length) {
-            throw new HttpException(DataErrors.NoLikedTweetsFound, HttpStatus.NOT_FOUND);
+            throw new Error(DataErrors.NoLikedTweetsFound);
         }
 
         return likes;

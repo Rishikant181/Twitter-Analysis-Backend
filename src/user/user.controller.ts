@@ -1,5 +1,5 @@
 // PACKAGE
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseFilters } from '@nestjs/common';
 
 // SERVICES
 import { UserService } from './user.service';
@@ -7,12 +7,16 @@ import { UserService } from './user.service';
 // ENTITIES
 import { User } from './entities/user.entity';
 import { Tweet } from '../tweet/entities/tweet.entity';
-import { CursoredData } from '../dto/common.dto';
+import { CursoredData } from '../dtos/cursored-data.dto';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';
 
+// FILTERS
+import { TwitterErrorFilter } from 'src/filters/twitter-error.filter';
+
 @Controller('user')
+@UseFilters(new TwitterErrorFilter())
 export class UserController {
 	constructor(private readonly userService: UserService) { }
 
