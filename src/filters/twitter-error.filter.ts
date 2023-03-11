@@ -1,5 +1,5 @@
 // PACKAGES
-import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 // ENUMS
@@ -41,6 +41,16 @@ export class TwitterErrorFilter implements ExceptionFilter {
                 statusCode: HttpStatus.FORBIDDEN,
                 message: error.message
             });
+        }
+        // If the error is an HttpException
+        else if (error instanceof HttpException){
+            response
+            .status(error.getStatus())
+            .json(error.getResponse());
+        }
+        // If can't identify error
+        else {
+            response.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
