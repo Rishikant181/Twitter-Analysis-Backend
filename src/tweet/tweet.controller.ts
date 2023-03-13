@@ -23,7 +23,7 @@ export class TweetController {
 	
 	@Post('/')
 	findTweets(@Body() query: TweetQueryDto, @Query() args: TweetListArgsDto): Promise<CursoredData<Tweet>> {
-		return this.tweetService.search(query, args.count, args.cursor);
+		return this.tweetService.search(query, args);
 	}
 
 	@Get(':id')
@@ -33,11 +33,11 @@ export class TweetController {
 
 	@Get(':id/likes')
 	findLikes(@Param('id') id: string, @Query() args: TweetListArgsDto): Promise<CursoredData<User>> {
-		return this.tweetService.likes(id, args.count, args.cursor);
+		return this.tweetService.likes(id, args);
 	}
 
 	@Get(':id/retweets')
 	findRetweets(@Param('id') id: string, @Query() args: TweetListArgsDto): Promise<CursoredData<User>> {
-		return this.tweetService.retweets(id, args.count, args.cursor);
+		return this.tweetService.retweets(id, args);
 	}
 }

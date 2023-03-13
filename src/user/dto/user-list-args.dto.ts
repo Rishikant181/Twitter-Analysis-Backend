@@ -3,7 +3,11 @@ import { Type } from 'class-transformer';
 import { IsInt, IsString, IsOptional, Min } from 'class-validator';
 
 export class UserListArgsDto {
-    /** The number of data items to fetch. */
+    /** The number of data items to fetch.
+     * 
+     * @defaultValue 40
+     * @remarks Must be >= 40
+     */
     @Type(() => Number)
     @IsInt()
     @IsOptional()

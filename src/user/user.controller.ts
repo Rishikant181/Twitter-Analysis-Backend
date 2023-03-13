@@ -27,16 +27,16 @@ export class UserController {
 
 	@Get(':id/followers')
 	followers(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<User>> {
-		return this.userService.findFollowers(id, args.count, args.cursor);
+		return this.userService.followers(id, args);
 	}
 
 	@Get(':id/following')
 	following(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<User>> {
-		return this.userService.findFollowing(id, args.count, args.cursor);
+		return this.userService.following(id, args);
 	}
 
 	@Get(':id/likes')
 	likes(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<Tweet>> {
-		return this.userService.findLikes(id, args.count, args.cursor);
+		return this.userService.likes(id, args);
 	}
 }

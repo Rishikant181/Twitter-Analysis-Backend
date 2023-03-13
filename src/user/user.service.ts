@@ -8,6 +8,9 @@ import { User } from './entities/user.entity';
 import { Tweet } from '../tweet/entities/tweet.entity';
 import { CursoredData } from '../dtos/cursored-data.dto';
 
+// DTOs
+import { UserListArgsDto } from './dto/user-list-args.dto';
+
 /**
  * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.
  */
@@ -15,6 +18,9 @@ import { CursoredData } from '../dtos/cursored-data.dto';
 export class UserService {
     /** The cookie string to use for authenticatin Rettiwt instance. */
     private cookie: string;
+
+    /** The maximum number of data items to fetch at once. */
+    private batchSize: number = 100;
     
     /**
      * @param request The oncoming HTTP request from the client.
@@ -49,17 +55,16 @@ export class UserService {
      * Get the followers of the Twitter user with the given id
      * 
      * @param id The id of the twitter user.
-     * @param count The number of followers to fetch, must be >= 40 when no cursor is provided.
-     * @param cursor The cursor to next batch.
+     * @param args Additional list arguments.
      * @returns The list of follower of the twitter user with the given id.
      */
-    async findFollowers(id: string, count: number, cursor: string): Promise<CursoredData<User>> {
+    async followers(id: string, args: UserListArgsDto): Promise<CursoredData<User>> {
         let followers: CursoredData<User> = {
             list: [],
-            next: { value: cursor }
+            next: { value: args.cursor }
         };
         let total: number = 0;                                          // To store the total number of data fetched
-        let batchSize: number = 100;                                    // To store the number of data to fetch at once
+        let batchSize: number = this.batchSize;                         // To store the number of data to fetch at once
 
         // Fetching batch-wise, as long as total data fetched is less than required
         do {
@@ -68,7 +73,7 @@ export class UserService {
              * If the amount of data remaining to fetch ( = count - total) is <= batchSize, this implies this is the last batch.
              * So the batch size is reduced to the amount of data remaining to fetch
              */
-            batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
+            batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
             let data = await Rettiwt(this.cookie).users.getUserFollowers(id, batchSize, followers.next.value);
@@ -84,7 +89,7 @@ export class UserService {
 
             // Incrementing total data fetched
             total = followers.list.length;
-        } while (total < count);
+        } while (total < args.count);
 
         // If no followers found
         if (!followers.list.length) {
@@ -98,17 +103,16 @@ export class UserService {
      * Get the following of the Twitter user with the given id
      * 
      * @param id The id of the twitter user.
-     * @param count The number of following to fetch, must be >= 40 when no cursor is provided.
-     * @param cursor The cursor to next batch.
+     * @param args Additional list arguments.
      * @returns The list of following of the twitter user with the given id.
      */
-    async findFollowing(id: string, count: number, cursor: string): Promise<CursoredData<User>> {
+    async following(id: string, args: UserListArgsDto): Promise<CursoredData<User>> {
         let following: CursoredData<User> = {
             list: [],
-            next: { value: cursor }
+            next: { value: args.cursor }
         };
         let total: number = 0;                                          // To store the total number of data fetched
-        let batchSize: number = 100;                                    // To store the number of data to fetch at once
+        let batchSize: number = this.batchSize;                         // To store the number of data to fetch at once
 
         // Fetching batch-wise, as long as total data fetched is less than required
         do {
@@ -117,7 +121,7 @@ export class UserService {
              * If the amount of data remaining to fetch ( = count - total) is <= batchSize, this implies this is the last batch.
              * So the batch size is reduced to the amount of data remaining to fetch
              */
-            batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
+            batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
             let data = await Rettiwt(this.cookie).users.getUserFollowing(id, batchSize, following.next.value);
@@ -133,7 +137,7 @@ export class UserService {
 
             // Incrementing total data fetched
             total = following.list.length;
-        } while (total < count);
+        } while (total < args.count);
 
         // If no following found
         if (!following.list.length) {
@@ -147,17 +151,16 @@ export class UserService {
      * Get the list of tweets liked by the Twitter user with the given id.
      * 
      * @param id The id of the twitter user.
-     * @param count The number of liked tweets to fetch, must be >= 40 when no cursor is provided.
-     * @param cursor The cursor to next batch.
+     * @param args Additional list arguments.
      * @returns The list of liked tweets of the twitter user with the given id.
      */
-    public async findLikes(id: string, count: number, cursor: string = ''): Promise<CursoredData<Tweet>> {
+    public async likes(id: string, args: UserListArgsDto): Promise<CursoredData<Tweet>> {
         let likes: CursoredData<Tweet> = {
             list: [],
-            next: { value: cursor }
+            next: { value: args.cursor }
         };
         let total: number = 0;                                          // To store the total number of data fetched
-        let batchSize: number = 100;                                    // To store the number of data to fetch at once
+        let batchSize: number = this.batchSize;                         // To store the number of data to fetch at once
 
         // Fetching batch-wise, as long as total data fetched is less than required
         do {
@@ -166,7 +169,7 @@ export class UserService {
              * If the amount of data remaining to fetch ( = count - total) is <= batchSize, this implies this is the last batch.
              * So the batch size is reduced to the amount of data remaining to fetch
              */
-            batchSize = ((count - total) <= batchSize) ? (count - total) : batchSize;
+            batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
             let data = await Rettiwt(this.cookie).users.getUserLikes(id, batchSize, likes.next.value);
@@ -182,7 +185,7 @@ export class UserService {
 
             // Incrementing total data fetched
             total = likes.list.length;
-        } while (total < count);
+        } while (total < args.count);
 
         // If no likes found
         if (!likes.list.length) {
