@@ -13,6 +13,6 @@ export class AccountController {
 
 	@Post('login')
 	login(@Body('credentials') credentials: AccountCredentialDto) {
-		return 'Logged in!';
+		return this.accountService.login(credentials);
 	}
 }
