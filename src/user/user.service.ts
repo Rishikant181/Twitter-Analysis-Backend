@@ -1,7 +1,7 @@
 // PACKAGE
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt, DataErrors } from 'rettiwt-api';
+import { Rettiwt } from 'rettiwt-api';
 
 // ENTITIES
 import { User } from './entities/user.entity';
@@ -10,14 +10,15 @@ import { CursoredData } from '../dtos/cursored-data.dto';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';
+import { ApiKeyDto } from '../auth/dto/api-key.dto';
 
 /**
- * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.
+ * This service is request-scoped since a new instance is created for every request, and the associated api key is used to fetch the data.
  */
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
-    /** The cookie string to use for authenticatin Rettiwt instance. */
-    private cookie: string;
+    /** The API keys to use for authenticating Rettiwt instance. */
+    private apiKey: ApiKeyDto;
 
     /** The maximum number of data items to fetch at once. */
     private batchSize: number = 100;
@@ -26,7 +27,7 @@ export class UserService {
      * @param request The oncoming HTTP request from the client.
      */
     constructor(@Inject(REQUEST) private request: Request) {
-        this.cookie = request.headers['cookie'];
+        this.apiKey = JSON.parse(request.headers['api_key']);
     }
 
 	/**
@@ -47,7 +48,7 @@ export class UserService {
         // If id is provided
         else {
             // Fetching and returning the details using id
-            return Rettiwt().users.getUserDetailsById(id);
+            return Rettiwt().users.getUserDetails(id);
         }
 	}
 
@@ -76,7 +77,7 @@ export class UserService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserFollowers(id, batchSize, followers.next.value);
+            let data = await Rettiwt(this.apiKey).users.getUserFollowers(id, batchSize, followers.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -90,11 +91,6 @@ export class UserService {
             // Incrementing total data fetched
             total = followers.list.length;
         } while (total < args.count);
-
-        // If no followers found
-        if (!followers.list.length) {
-            throw new Error(DataErrors.NoFollowsFound);
-        }
 
         return followers;
     }
@@ -124,7 +120,7 @@ export class UserService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserFollowing(id, batchSize, following.next.value);
+            let data = await Rettiwt(this.apiKey).users.getUserFollowing(id, batchSize, following.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -138,11 +134,6 @@ export class UserService {
             // Incrementing total data fetched
             total = following.list.length;
         } while (total < args.count);
-
-        // If no following found
-        if (!following.list.length) {
-            throw new Error(DataErrors.NoFollowsFound);
-        }
 
         return following;
     }
@@ -172,7 +163,7 @@ export class UserService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).users.getUserLikes(id, batchSize, likes.next.value);
+            let data = await Rettiwt(this.apiKey).users.getUserLikes(id, batchSize, likes.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -186,11 +177,6 @@ export class UserService {
             // Incrementing total data fetched
             total = likes.list.length;
         } while (total < args.count);
-
-        // If no likes found
-        if (!likes.list.length) {
-            throw new Error(DataErrors.NoLikedTweetsFound);
-        }
 
         return likes;
     }

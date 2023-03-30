@@ -1,7 +1,7 @@
 // PACKAGES
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt, DataErrors } from 'rettiwt-api';
+import { Rettiwt } from 'rettiwt-api';
 
 // ENTITIES
 import { Tweet } from './entities/tweet.entity';
@@ -11,14 +11,15 @@ import { CursoredData } from '../dtos/cursored-data.dto';
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';
 import { TweetListArgsDto } from './dto/tweet-list-args.dto';
+import { ApiKeyDto } from '../auth/dto/api-key.dto';
 
 /**
- * This service is request-scoped since a new instance is created for every request, and the associated cookies are used to fetch the data.
+ * This service is request-scoped since a new instance is created for every request, and the associated api key is used to fetch the data.
  */
 @Injectable({ scope: Scope.REQUEST })
 export class TweetService {
-    /** The cookie string to use for authenticatin Rettiwt instance. */
-    private cookie: string;
+    /** The API keys to use for authenticating Rettiwt instance. */
+    private apiKey: ApiKeyDto;
 
     /** The maximum number of data items to fetch at once. */
     private batchSize: number = 100;
@@ -27,7 +28,7 @@ export class TweetService {
      * @param request The oncoming HTTP request from the client.
      */
     constructor(@Inject(REQUEST) private request: Request) {
-        this.cookie = request.headers['cookie'];
+        this.apiKey = JSON.parse(request.headers['api_key']);
     }
 
     /**
@@ -38,7 +39,7 @@ export class TweetService {
      */
     async find(id: string): Promise<Tweet> {
         // Fetching and returning the details of the tweet with the given id
-        return await Rettiwt().tweets.getTweetById(id);
+        return await Rettiwt().tweets.getTweetDetails(id);
     }
 
     /**
@@ -54,7 +55,7 @@ export class TweetService {
             next: { value: args.cursor }
         };
         let total: number = 0;                                          // To store the total number of data fetched
-        let batchSize: number = this.batchSize;                         // To store the number of data to fetch at once
+        let batchSize: number = 20;                                     // To store the number of data to fetch at once
 
         // Fetching batch-wise, as long as total data fetched is less than required
         do {
@@ -80,11 +81,6 @@ export class TweetService {
             // Incrementing total data fetched
             total = tweets.list.length;
         } while (total < args.count);
-
-        // If no tweets found
-        if (!tweets.list.length) {
-            throw new Error(DataErrors.NoTweetsFound);
-        }
 
         return tweets;
     }
@@ -114,7 +110,7 @@ export class TweetService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).tweets.getTweetLikers(id, batchSize, likes.next.value);
+            let data = await Rettiwt(this.apiKey).tweets.getTweetLikers(id, batchSize, likes.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -128,11 +124,6 @@ export class TweetService {
             // Incrementing total data fetched
             total = likes.list.length;
         } while (total < args.count);
-
-        // If no likes found
-        if (!likes.list.length) {
-            throw new Error(DataErrors.NoLikersFound);
-        }
 
         return likes;
     }
@@ -162,7 +153,7 @@ export class TweetService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.cookie).tweets.getTweetRetweeters(id, batchSize, retweets.next.value);
+            let data = await Rettiwt(this.apiKey).tweets.getTweetRetweeters(id, batchSize, retweets.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -176,11 +167,6 @@ export class TweetService {
             // Incrementing total data fetched
             total = retweets.list.length;
         } while (total < args.count);
-
-        // If no retweets found
-        if (!retweets.list.length) {
-            throw new Error(DataErrors.NoRetweetersFound);
-        }
 
         return retweets;
     }

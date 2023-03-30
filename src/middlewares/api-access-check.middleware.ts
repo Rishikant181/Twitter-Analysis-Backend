@@ -3,7 +3,7 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 // DTOs
-import { ApiKey } from '../auth/dto/api-key.dto';
+import { ApiKeyDto } from '../auth/dto/api-key.dto';
 
 /**
  * This middleware checks if the use who made the HTTP request has access to advanced RettiwtAPI functions.
@@ -14,7 +14,7 @@ import { ApiKey } from '../auth/dto/api-key.dto';
 export class ApiAccessCheckMiddleware implements NestMiddleware {
     use(req: Request, res: Response, next: NextFunction) {
         // Getting the access tokens from the headers
-        const apiKey: ApiKey = new ApiKey({
+        const apiKey: ApiKeyDto = new ApiKeyDto({
             auth_token: req.headers['auth_token'] as string,
             ct0: req.headers['ct0'] as string,
             kdt: req.headers['kdt'] as string,

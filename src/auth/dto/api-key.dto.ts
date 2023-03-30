@@ -4,7 +4,7 @@ import { IAuthCookie } from 'rettiwt-api';
 /**
  * The API keys to be used for authenticating RettiwtAPI instance
  */
-export class ApiKey implements IAuthCookie {
+export class ApiKeyDto implements IAuthCookie {
     /** Token used to authenticate a device. */
     kdt: string;
 
