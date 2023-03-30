@@ -1,8 +1,9 @@
 // PACKAGES
 import { Type } from 'class-transformer';
 import { IsInt, IsString, IsOptional, Min } from 'class-validator';
+import { IListArgs } from 'rettiwt-api';
 
-export class TweetListArgsDto {
+export class TweetListArgsDto implements IListArgs {
     /** The number of data items to fetch.
      * 
      * @defaultValue 10

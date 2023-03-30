@@ -1,11 +1,7 @@
 // PACKAGES
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt, CursoredData } from 'rettiwt-api';
-
-// ENTITIES
-import { Tweet } from './entities/tweet.entity';
-import { User } from '../user/entities/user.entity';
+import { Rettiwt, CursoredData, Tweet, User } from 'rettiwt-api';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';

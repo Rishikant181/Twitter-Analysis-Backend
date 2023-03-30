@@ -1,5 +1,5 @@
 // PACKAGES
-import { IsAlpha, IsAlphanumeric, IsEmail, IsString, MinLength } from 'class-validator'
+import { IsAlphanumeric, IsEmail, IsString, MinLength } from 'class-validator'
 
 /**
  * The credentials used to login to an account.

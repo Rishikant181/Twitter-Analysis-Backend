@@ -1,8 +1,8 @@
 // PACKAGE
 import { IsArray, IsBoolean, IsNumberString, IsString, IsOptional, IsDateString } from 'class-validator';
-import { TweetFilter } from 'rettiwt-api';
+import { ITweetFilter } from 'rettiwt-api';
 
-export class TweetQueryDto implements TweetFilter {
+export class TweetQueryDto implements ITweetFilter {
     /** The list of words to search. */
     @IsArray()
     @IsString({ each: true })
