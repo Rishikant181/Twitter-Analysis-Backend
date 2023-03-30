@@ -1,5 +1,6 @@
 // PACKAGE
 import { Controller, Get, Param, Query, UseFilters } from '@nestjs/common';
+import { CursoredData } from 'rettiwt-api';
 
 // SERVICES
 import { UserService } from './user.service';
@@ -7,7 +8,6 @@ import { UserService } from './user.service';
 // ENTITIES
 import { User } from './entities/user.entity';
 import { Tweet } from '../tweet/entities/tweet.entity';
-import { CursoredData } from '../dtos/cursored-data.dto';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';

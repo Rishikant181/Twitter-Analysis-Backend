@@ -1,9 +1,7 @@
 // PACKAGES
 import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
 import { Request, Response } from 'express';
-
-// ENUMS
-import { DataValidationError } from '../dtos/validation-error.dto';
+import { DataValidationError } from 'rettiwt-api';
 
 /**
  * NestJS filter class that handles all errors related to communicating with Twitter.

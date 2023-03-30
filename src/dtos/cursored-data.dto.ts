@@ -1,1 +1,0 @@
-export { CursoredData } from 'rettiwt-api';

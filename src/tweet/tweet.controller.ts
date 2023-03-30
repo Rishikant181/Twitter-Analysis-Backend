@@ -1,5 +1,6 @@
 // PACKAGES
 import { Body, Post, Query, Controller, Get, Param, UseFilters } from '@nestjs/common';
+import { CursoredData } from 'rettiwt-api';
 
 // SERVICES
 import { TweetService } from './tweet.service';
@@ -7,7 +8,6 @@ import { TweetService } from './tweet.service';
 // ENTITIES
 import { Tweet } from './entities/tweet.entity';
 import { User } from '../user/entities/user.entity';
-import { CursoredData } from '../dtos/cursored-data.dto';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';
