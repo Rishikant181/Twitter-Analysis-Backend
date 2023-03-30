@@ -20,7 +20,7 @@ export class TwitterErrorFilter implements ExceptionFilter {
         // Getting the HTTP response
         const response: Response = http.getResponse<Response>();
 
-        // If the requested data cannot be found
+        // If any validation error found
         if (error instanceof DataValidationError) {
             response
             .json(error);
