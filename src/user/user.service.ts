@@ -27,11 +27,13 @@ export class UserService {
      * @param request The oncoming HTTP request from the client.
      */
     constructor(@Inject(REQUEST) private request: Request) {
-        // Getting the API key string from the request
-        const apiKeyString: string = request.headers['api_key'];
-
         // If API key string present, then storing if after parsing to JSON
-        this.apiKey =  apiKeyString ? JSON.parse(request.headers['api_key']) : undefined;
+        this.apiKey =  {
+            auth_token: request.headers['auth_token'],
+            ct0: request.headers['ct0'],
+            kdt: request.headers['kdt'],
+            twid: request.headers['twid']
+        }
     }
 
 	/**

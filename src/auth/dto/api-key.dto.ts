@@ -26,11 +26,4 @@ export class ApiKeyDto implements IAuthCookie {
         this.kdt = keys.kdt;
         this.twid = keys.twid;
     }
-
-    /**
-     * @returns The string representation of the the API keys
-     */
-    toString(): string {
-        return JSON.stringify(this);
-    }
 }
