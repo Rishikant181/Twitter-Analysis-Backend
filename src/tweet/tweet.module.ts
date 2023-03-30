@@ -1,5 +1,8 @@
 // PACKAGES
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+
+// MIDDLEWARES
+import { ApiAccessCheckMiddleware } from '../middlewares/api-access-check.middleware';
 
 // SERVICES
 import { TweetService } from './tweet.service';
@@ -11,4 +14,9 @@ import { TweetController } from './tweet.controller';
 	controllers: [TweetController],
 	providers: [TweetService]
 })
-export class TweetModule { }
+export class TweetModule implements NestModule {
+	configure(consumer: MiddlewareConsumer) {
+		consumer
+			.apply(ApiAccessCheckMiddleware);
+	}
+}

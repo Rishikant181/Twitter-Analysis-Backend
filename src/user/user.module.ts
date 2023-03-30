@@ -1,5 +1,8 @@
 // PACKAGE
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+
+// MIDDLEWARES
+import { ApiAccessCheckMiddleware } from '../middlewares/api-access-check.middleware';
 
 // SERVICES
 import { UserService } from './user.service';
@@ -11,4 +14,9 @@ import { UserController } from './user.controller';
     controllers: [UserController],
     providers: [UserService]
 })
-export class UserModule { }
+export class UserModule implements NestModule{
+    configure(consumer: MiddlewareConsumer) {
+        consumer
+            .apply(ApiAccessCheckMiddleware);
+    }
+}
