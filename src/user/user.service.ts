@@ -18,7 +18,7 @@ import { ApiKeyDto } from '../auth/dto/api-key.dto';
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
     /** The API keys to use for authenticating Rettiwt instance. */
-    private apiKey: ApiKeyDto;
+    private apiKey?: ApiKeyDto;
 
     /** The maximum number of data items to fetch at once. */
     private batchSize: number = 100;
@@ -27,7 +27,11 @@ export class UserService {
      * @param request The oncoming HTTP request from the client.
      */
     constructor(@Inject(REQUEST) private request: Request) {
-        this.apiKey = JSON.parse(request.headers['api_key']);
+        // Getting the API key string from the request
+        const apiKeyString: string = request.headers['api_key'];
+
+        // If API key string present, then storing if after parsing to JSON
+        this.apiKey =  apiKeyString ? JSON.parse(request.headers['api_key']) : undefined;
     }
 
 	/**

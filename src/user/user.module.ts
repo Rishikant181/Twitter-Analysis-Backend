@@ -14,9 +14,11 @@ import { UserController } from './user.controller';
     controllers: [UserController],
     providers: [UserService]
 })
+
 export class UserModule implements NestModule{
     configure(consumer: MiddlewareConsumer) {
         consumer
-            .apply(ApiAccessCheckMiddleware);
+            .apply(ApiAccessCheckMiddleware)
+            .forRoutes('/');
     }
 }

@@ -17,6 +17,7 @@ import { TweetController } from './tweet.controller';
 export class TweetModule implements NestModule {
 	configure(consumer: MiddlewareConsumer) {
 		consumer
-			.apply(ApiAccessCheckMiddleware);
+			.apply(ApiAccessCheckMiddleware)
+			.forRoutes('/');
 	}
 }
