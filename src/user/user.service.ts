@@ -27,7 +27,7 @@ export class UserService {
      * @param request The oncoming HTTP request from the client.
      */
     constructor(@Inject(REQUEST) private request: Request) {
-        // If API key string present, then storing if after parsing to JSON
+        // Getting the API keys from request header
         this.apiKey =  {
             auth_token: request.headers['auth_token'],
             ct0: request.headers['ct0'],
