@@ -3,7 +3,7 @@ import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from
 import { Request, Response } from 'express';
 
 // ENUMS
-import { DataErrors, AuthenticationErrors } from '../enums/twitter-error.enums';
+import { DataValidationError } from '../dtos/validation-error.dto';
 
 /**
  * NestJS filter class that handles all errors related to communicating with Twitter.
@@ -21,26 +21,9 @@ export class TwitterErrorFilter implements ExceptionFilter {
         const response: Response = http.getResponse<Response>();
 
         // If the requested data cannot be found
-        /**
-         * This is done by getting the values of the DataErrors enum and then checking if the error message exists.
-         * If it does, then the error received is a DataError.
-         */
-        if (Object.values(DataErrors).includes(error.message as DataErrors)) {
+        if (error instanceof DataValidationError) {
             response
-            .status(HttpStatus.NOT_FOUND)
-            .json({
-                statusCode: HttpStatus.NOT_FOUND,
-                message: error.message
-            });
-        }
-        // If failed to fetch data because user is not authenticated
-        else if (error.message == AuthenticationErrors.NotAuthenticated) {
-            response
-            .status(HttpStatus.FORBIDDEN)
-            .json({
-                statusCode: HttpStatus.FORBIDDEN,
-                message: error.message
-            });
+            .json(error);
         }
         // If the error is an HttpException
         else if (error instanceof HttpException){
