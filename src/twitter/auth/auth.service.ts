@@ -1,6 +1,6 @@
 // PACKAGES
 import { Injectable } from '@nestjs/common';
-import { Rettiwt } from 'rettiwt-api';
+import { Rettiwt, AuthCookie} from 'rettiwt-api';
 
 // DTOs
 import { AuthCredentialDto } from './dto/auth-credential.dto';
@@ -12,7 +12,7 @@ export class AuthService {
      * @param credentials The credentials to the Twitter account.
      * @returns The cookies after logging in.
      */
-    async login(credentials: AuthCredentialDto) {
+    async login(credentials: AuthCredentialDto): Promise<AuthCookie> {
         return Rettiwt().account.login(credentials.email, credentials.userName, credentials.password);
     }
 }
