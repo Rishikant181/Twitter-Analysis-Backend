@@ -10,9 +10,9 @@ import { TweetQueryDto } from './dto/tweet-query.dto';
 import { TweetListArgsDto } from './dto/tweet-list-args.dto';
 
 // FILTERS
-import { TwitterErrorFilter } from 'src/filters/twitter-error.filter';
+import { TwitterErrorFilter } from '../twitter.filter';
 
-@Controller('twitter/tweet')
+@Controller('tweet')
 @UseFilters(new TwitterErrorFilter())
 export class TweetController {
 	constructor(private readonly tweetService: TweetService) { }

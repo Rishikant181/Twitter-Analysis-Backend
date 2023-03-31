@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './twitter/user/user.module';
-import { TweetModule } from './twitter/tweet/tweet.module';
-import { AuthModule } from './twitter/auth/auth.module';
+import { TwitterModule } from './twitter/twitter.module';
 
 @Module({
-	imports: [UserModule, TweetModule, AuthModule],
+	imports: [TwitterModule],
 	controllers: [],
 	providers: [],
 })

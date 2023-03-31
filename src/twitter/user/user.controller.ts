@@ -9,9 +9,9 @@ import { UserService } from './user.service';
 import { UserListArgsDto } from './dto/user-list-args.dto';
 
 // FILTERS
-import { TwitterErrorFilter } from 'src/filters/twitter-error.filter';
+import { TwitterErrorFilter } from '../twitter.filter';
 
-@Controller('twitter/user')
+@Controller('user')
 @UseFilters(new TwitterErrorFilter())
 export class UserController {
 	constructor(private readonly userService: UserService) { }
