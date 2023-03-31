@@ -12,7 +12,7 @@ import { TweetListArgsDto } from './dto/tweet-list-args.dto';
 // FILTERS
 import { TwitterErrorFilter } from 'src/filters/twitter-error.filter';
 
-@Controller('tweet')
+@Controller('twitter/tweet')
 @UseFilters(new TwitterErrorFilter())
 export class TweetController {
 	constructor(private readonly tweetService: TweetService) { }

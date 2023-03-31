@@ -11,7 +11,7 @@ import { UserListArgsDto } from './dto/user-list-args.dto';
 // FILTERS
 import { TwitterErrorFilter } from 'src/filters/twitter-error.filter';
 
-@Controller('user')
+@Controller('twitter/user')
 @UseFilters(new TwitterErrorFilter())
 export class UserController {
 	constructor(private readonly userService: UserService) { }
