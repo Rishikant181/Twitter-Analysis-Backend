@@ -1,7 +1,7 @@
 /**
  * The document types enum.
  */
-export enum IContentType {
+export enum ContentType {
     TYPE_UNSPECIFIED = 'TYPE_UNSPECIFIED',
     PLAIN_TEXT = 'PLAIN_TEXT',
     HTML = 'HTML'
@@ -12,10 +12,7 @@ export enum IContentType {
  */
 export interface IDocument {
     /** The content type of the docuemnt. If the type is not set or is TYPE_UNSPECIFIED, returns an INVALID_ARGUMENT error. */
-    type: IContentType;
-
-    /** The language of the document (if not specified, the language is automatically detected). */
-    language: string;
+    type: ContentType;
 
     /** The content of the input in string format. */
     content: string;
@@ -24,7 +21,7 @@ export interface IDocument {
 /**
  * Represents the text encoding that the caller uses to process the output.
  */
-export enum IEncodingType {
+export enum EncodingType {
     NONE = 'NONE',
     UTF8 = 'UTF8',
     UTF16 = 'UTF16',
@@ -39,5 +36,5 @@ export interface IPayload {
     document: IDocument;
 
     /** The encoding type used by the API to calculate offsets. */
-    encodingType: IEncodingType;
+    encodingType: EncodingType;
 };
