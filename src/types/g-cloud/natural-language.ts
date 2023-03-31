@@ -1,25 +1,30 @@
 /**
- * The different type of document content.
+ * The document types enum.
  */
-export enum ContentType {
+export enum IContentType {
     TYPE_UNSPECIFIED = 'TYPE_UNSPECIFIED',
     PLAIN_TEXT = 'PLAIN_TEXT',
     HTML = 'HTML'
 };
 
 /**
- * The document to be analyzed.
+ * Represents the input to API methods.
  */
-export interface Document {
-    type: ContentType;
+export interface IDocument {
+    /** The content type of the docuemnt. If the type is not set or is TYPE_UNSPECIFIED, returns an INVALID_ARGUMENT error. */
+    type: IContentType;
+
+    /** The language of the document (if not specified, the language is automatically detected). */
     language: string;
+
+    /** The content of the input in string format. */
     content: string;
 };
 
 /**
- * The different encoding types that a document uses.
+ * Represents the text encoding that the caller uses to process the output.
  */
-export enum EncodingType {
+export enum IEncodingType {
     NONE = 'NONE',
     UTF8 = 'UTF8',
     UTF16 = 'UTF16',
@@ -29,15 +34,18 @@ export enum EncodingType {
 /**
  * The payload to be sent for analyzing entity sentiment.
  */
-export interface Payload {
-    document: Document;
-    encodingType: EncodingType;
+export interface IPayload {
+    /** Input document. */
+    document: IDocument;
+
+    /** The encoding type used by the API to calculate offsets. */
+    encodingType: IEncodingType;
 };
 
 /**
- * The different entity types that can be identified.
+ * The type of the entity.
  */
-export enum EntityType {
+export enum IEntityType {
     UNKNOWN = 'UNKNOWN',
     PERSON = 'PERSON',
     LOCATION = 'LOCATION',
@@ -54,51 +62,85 @@ export enum EntityType {
 };
 
 /**
- * The span of the mentioned entity in the given document.
+ * Represents an output piece of text.
  */
-export interface TextSpan {
+export interface ITextSpan {
+    /** The content of the output text. */
     content: string;
+
+    /** The beginning offset of the content in the original document. */
     beginOffset: number;
 };
 
 /**
  * The type of noun that the entity is.
  */
-export enum EntityMentionType {
+export enum IEntityMentionType {
     TYPE_UNKNOWN = 'TYPE_UNKNOWN',
     PROPER = 'PROPER',
     COMMON = 'COMMON'
 };
 
 /**
- * 
+ * Represents the feeling associated with the entire text or entities in the text.
  */
-export interface Sentiment {
+export interface ISentiment {
+    /** The absolute magnitude of sentiment, in [0, +inf) range. */
     magnitude: number;
+
+    /** Sentiment score between -1.0 (negative sentiment) and 1.0 (positive sentiment). */
     score: number
 }
 
-export interface EntityMention {
-    text: TextSpan;
-    type: EntityMentionType;
-    sentiment: Sentiment;
+/**
+ * Represents a mention for an entity in the text.  
+ * Currently, proper noun mentions are supported.  
+ */
+export interface IEntityMention {
+    /** The mention text. */
+    text: ITextSpan;
+
+    /** The type of the entity mention. */
+    type: IEntityMentionType;
+
+    /** The sentiment expressed for this mention of the entity in the provided document. */
+    sentiment: ISentiment;
 }
 
 /**
- * The analysis result of each individual entity.
+ * Represents a phrase in the text that is a known entity, such as a person, an organization, or location.
  */
-export interface Entity {
+export interface IEntity {
+    /** The representative name for the entity. */
     name: string;
-    type: EntityType;
+
+    /** The entity type. */
+    type: IEntityType;
+
+    /**
+     * The salience score associated with the entity in the [0, 1.0] range.  
+     * The salience score for an entity provides information about the importance or centrality of that entity to the entire document text.  
+     * Scores closer to 0 are less salient, while scores closer to 1.0 are highly salient.  
+     */
     salience: number;
-    mentions: EntityMention[];
-    sentiment: Sentiment;
+
+    /**
+     * The mentions of this entity in the input document.  
+     * The API currently supports proper noun mentions.  
+     */
+    mentions: IEntityMention[];
+
+    /** The aggregate sentiment expressed for this entity in the provided document. */
+    sentiment: ISentiment;
 }
 
 /**
- * The response received from Cloud Natural Language API.
+ * The entity-level sentiment analysis response message.
  */
-export interface Response {
-    entities: Entity[];
+export interface IResponse {
+    /** The recognized entities in the input document with associated sentiments. */
+    entities: IEntity[];
+
+    /** The language of the text as specified in the request or automatically-detected. */
     language: string;
 }
