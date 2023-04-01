@@ -1,10 +1,11 @@
 // PACKAGE
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt, CursoredData, Tweet, User, AuthCookie } from 'rettiwt-api';
+import { Rettiwt, CursoredData, Tweet, User } from 'rettiwt-api';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';
+import { AuthKeyDto } from 'src/twitter/auth/dto/auth-key.dto';
 
 /**
  * This service is request-scoped since a new instance is created for every request, and the associated api key is used to fetch the data.
@@ -12,7 +13,7 @@ import { UserListArgsDto } from './dto/user-list-args.dto';
 @Injectable({ scope: Scope.REQUEST })
 export class UserService {
     /** The API keys to use for authenticating Rettiwt instance. */
-    private apiKey: AuthCookie;
+    private apiKey: AuthKeyDto;
 
     /** The maximum number of data items to fetch at once. */
     private batchSize: number = 100;
