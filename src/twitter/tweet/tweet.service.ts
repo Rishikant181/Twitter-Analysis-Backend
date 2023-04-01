@@ -1,39 +1,25 @@
 // PACKAGES
-import { Inject, Injectable, Scope } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { Rettiwt } from 'rettiwt-api';
+import { Inject, Injectable } from '@nestjs/common';
+
+// PROVIDERS
+import { TwitterService } from '../twitter.service';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';
 import { TweetListArgsDto } from './dto/tweet-list-args.dto';
 import { TweetDto } from './dto/tweet.dto';
 import { CursoredDataDto } from '../dto/cursored-list.dto';
-import { AuthKeyDto } from 'src/twitter/auth/dto/auth-key.dto';
 import { UserDto } from 'src/twitter/user/dto/user.dto';
 
-/**
- * This service is request-scoped since a new instance is created for every request, and the associated api key is used to fetch the data.
- */
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class TweetService {
-    /** The API keys to use for authenticating Rettiwt instance. */
-    private apiKey: AuthKeyDto;
-
     /** The maximum number of data items to fetch at once. */
     private batchSize: number = 100;
 
     /**
-     * @param request The oncoming HTTP request from the client.
+     * @param twitter The TweetService instance to use accessing Twitter API.
      */
-    constructor(@Inject(REQUEST) private request: Request) {
-        // Getting the API keys from request header
-        this.apiKey =  {
-            auth_token: request.headers['auth_token'],
-            ct0: request.headers['ct0'],
-            kdt: request.headers['kdt'],
-            twid: request.headers['twid']
-        }
-    }
+    constructor(@Inject(TwitterService) private twitter: TwitterService) { }
 
     /**
      * Get the details of the Tweet with the given id/username.
@@ -43,7 +29,7 @@ export class TweetService {
      */
     async find(id: string): Promise<TweetDto> {
         // Fetching and returning the details of the tweet with the given id
-        return await Rettiwt().tweets.getTweetDetails(id);
+        return await this.twitter.api().tweets.getTweetDetails(id);
     }
 
     /**
@@ -73,7 +59,7 @@ export class TweetService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt().tweets.getTweets(query, batchSize, tweets.next.value);
+            let data = await this.twitter.api().tweets.getTweets(query, batchSize, tweets.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -118,7 +104,7 @@ export class TweetService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.apiKey).tweets.getTweetLikers(id, batchSize, likes.next.value);
+            let data = await this.twitter.api(true).tweets.getTweetLikers(id, batchSize, likes.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -163,7 +149,7 @@ export class TweetService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.apiKey).tweets.getTweetRetweeters(id, batchSize, retweets.next.value);
+            let data = await this.twitter.api(true).tweets.getTweetRetweeters(id, batchSize, retweets.next.value);
 
             // If no additional data found
             if (!data.list.length) {

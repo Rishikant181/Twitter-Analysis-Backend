@@ -1,5 +1,11 @@
+// PACKAGES
 import { Module } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
+
+// SERVICES
+import { TwitterService } from './twitter.service';
+
+// MODULES
 import { UserModule } from './user/user.module';
 import { TweetModule } from './tweet/tweet.module';
 import { AuthModule } from './auth/auth.module';
@@ -25,7 +31,7 @@ import { AuthModule } from './auth/auth.module';
         ])
     ],
     controllers: [],
-    providers: [],
+    providers: [TwitterService],
 })
 
 export class TwitterModule { }

@@ -1,38 +1,24 @@
 // PACKAGE
-import { Inject, Injectable, Scope } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { Rettiwt } from 'rettiwt-api';
+import { Inject, Injectable } from '@nestjs/common';
+
+// PROVIDERS
+import { TwitterService } from '../twitter.service';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';
 import { UserDto } from './dto/user.dto';
 import { CursoredDataDto } from '../dto/cursored-list.dto';
-import { AuthKeyDto } from 'src/twitter/auth/dto/auth-key.dto';
 import { TweetDto } from 'src/twitter/tweet/dto/tweet.dto';
 
-/**
- * This service is request-scoped since a new instance is created for every request, and the associated api key is used to fetch the data.
- */
-@Injectable({ scope: Scope.REQUEST })
+@Injectable()
 export class UserService {
-    /** The API keys to use for authenticating Rettiwt instance. */
-    private apiKey: AuthKeyDto;
-
     /** The maximum number of data items to fetch at once. */
     private batchSize: number = 100;
     
     /**
-     * @param request The oncoming HTTP request from the client.
+     * @param twitter The TweetService instance to use accessing Twitter API.
      */
-    constructor(@Inject(REQUEST) private request: Request) {
-        // Getting the API keys from request header
-        this.apiKey =  {
-            auth_token: request.headers['auth_token'],
-            ct0: request.headers['ct0'],
-            kdt: request.headers['kdt'],
-            twid: request.headers['twid']
-        }
-    }
+    constructor(@Inject(TwitterService) private twitter: TwitterService) { }
 
 	/**
      * Get the details of the Twitter user with the given id/username.
@@ -47,12 +33,12 @@ export class UserService {
 		// If username is provided
         if(isNaN(Number(id))) {
             // Fetching and returning the details using username
-            return Rettiwt().users.getUserDetails(id);
+            return this.twitter.api().users.getUserDetails(id);
         }
         // If id is provided
         else {
             // Fetching and returning the details using id
-            return Rettiwt().users.getUserDetails(id);
+            return this.twitter.api().users.getUserDetails(id);
         }
 	}
 
@@ -83,7 +69,7 @@ export class UserService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.apiKey).users.getUserFollowers(id, batchSize, followers.next.value);
+            let data = await this.twitter.api(true).users.getUserFollowers(id, batchSize, followers.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -128,7 +114,7 @@ export class UserService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.apiKey).users.getUserFollowing(id, batchSize, following.next.value);
+            let data = await this.twitter.api(true).users.getUserFollowing(id, batchSize, following.next.value);
 
             // If no additional data found
             if (!data.list.length) {
@@ -173,7 +159,7 @@ export class UserService {
             batchSize = ((args.count - total) <= batchSize) ? (args.count - total) : batchSize;
 
             // Fetching a single batch
-            let data = await Rettiwt(this.apiKey).users.getUserLikes(id, batchSize, likes.next.value);
+            let data = await this.twitter.api(true).users.getUserLikes(id, batchSize, likes.next.value);
 
             // If no additional data found
             if (!data.list.length) {
