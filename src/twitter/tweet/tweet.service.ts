@@ -1,13 +1,15 @@
 // PACKAGES
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt, Tweet, User } from 'rettiwt-api';
+import { Rettiwt } from 'rettiwt-api';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';
 import { TweetListArgsDto } from './dto/tweet-list-args.dto';
+import { TweetDto } from './dto/tweet.dto';
 import { CursoredDataDto } from '../dto/cursored-list.dto';
 import { AuthKeyDto } from 'src/twitter/auth/dto/auth-key.dto';
+import { UserDto } from 'src/twitter/user/dto/user.dto';
 
 /**
  * This service is request-scoped since a new instance is created for every request, and the associated api key is used to fetch the data.
@@ -39,7 +41,7 @@ export class TweetService {
      * @param id The id of the tweet.
      * @returns The details of the tweet with the given id.
      */
-    async find(id: string): Promise<Tweet> {
+    async find(id: string): Promise<TweetDto> {
         // Fetching and returning the details of the tweet with the given id
         return await Rettiwt().tweets.getTweetDetails(id);
     }
@@ -51,9 +53,9 @@ export class TweetService {
      * @param args Additional list arguments.
      * @returns The list of tweets matching the given query.
      */
-    async search(query: TweetQueryDto, args: TweetListArgsDto): Promise<CursoredDataDto<Tweet>> {
+    async search(query: TweetQueryDto, args: TweetListArgsDto): Promise<CursoredDataDto<TweetDto>> {
         /** The cursored data to be returned. */
-        let tweets: CursoredDataDto<Tweet> = new CursoredDataDto<Tweet>([], args.cursor);
+        let tweets: CursoredDataDto<TweetDto> = new CursoredDataDto<TweetDto>([], args.cursor);
         
         /** The total number of data fetched. */
         let total: number = 0;
@@ -96,9 +98,9 @@ export class TweetService {
      * @param args Additional list arguments.
      * @returns The list of likes of the tweet with the given id.
      */
-    async likes(id: string, args: TweetListArgsDto): Promise<CursoredDataDto<User>> {
+    async likes(id: string, args: TweetListArgsDto): Promise<CursoredDataDto<UserDto>> {
         /** The cursored data to be returned. */
-        let likes: CursoredDataDto<User> = new CursoredDataDto<User>([], args.cursor);
+        let likes: CursoredDataDto<UserDto> = new CursoredDataDto<UserDto>([], args.cursor);
 
         /** The total number of data fetched. */
         let total: number = 0;
@@ -141,9 +143,9 @@ export class TweetService {
      * @param args Additional list arguments.
      * @returns The list of retweets of the tweet with the given id.
      */
-    async retweets(id: string, args: TweetListArgsDto): Promise<CursoredDataDto<User>> {
+    async retweets(id: string, args: TweetListArgsDto): Promise<CursoredDataDto<UserDto>> {
         /** The cursored data to be returned. */
-        let retweets: CursoredDataDto<User> = new CursoredDataDto<User>([], args.cursor);
+        let retweets: CursoredDataDto<UserDto> = new CursoredDataDto<UserDto>([], args.cursor);
 
         /** The total number of data fetched. */
         let total: number = 0;

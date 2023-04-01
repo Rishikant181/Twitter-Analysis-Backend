@@ -1,12 +1,14 @@
 // PACKAGE
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt, Tweet, User } from 'rettiwt-api';
+import { Rettiwt } from 'rettiwt-api';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';
+import { UserDto } from './dto/user.dto';
 import { CursoredDataDto } from '../dto/cursored-list.dto';
 import { AuthKeyDto } from 'src/twitter/auth/dto/auth-key.dto';
+import { TweetDto } from 'src/twitter/tweet/dto/tweet.dto';
 
 /**
  * This service is request-scoped since a new instance is created for every request, and the associated api key is used to fetch the data.
@@ -38,7 +40,7 @@ export class UserService {
 	 * @param id The id/username of the twitter user.
 	 * @returns The details of the twitter user with the given id/username.
 	 */
-	async find(id: string): Promise<User> {
+	async find(id: string): Promise<UserDto> {
         /**
          * @remarks There might be a better way to do this.
          */
@@ -61,9 +63,9 @@ export class UserService {
      * @param args Additional list arguments.
      * @returns The list of follower of the twitter user with the given id.
      */
-    async followers(id: string, args: UserListArgsDto): Promise<CursoredDataDto<User>> {
+    async followers(id: string, args: UserListArgsDto): Promise<CursoredDataDto<UserDto>> {
         /** The cursored data to be returned. */
-        let followers: CursoredDataDto<User> = new CursoredDataDto<User>([], args.cursor);
+        let followers: CursoredDataDto<UserDto> = new CursoredDataDto<UserDto>([], args.cursor);
 
         /** The total number of data fetched. */
         let total: number = 0;
@@ -106,9 +108,9 @@ export class UserService {
      * @param args Additional list arguments.
      * @returns The list of following of the twitter user with the given id.
      */
-    async following(id: string, args: UserListArgsDto): Promise<CursoredDataDto<User>> {
+    async following(id: string, args: UserListArgsDto): Promise<CursoredDataDto<UserDto>> {
         /** The cursored data to be returned. */
-        let following: CursoredDataDto<User> = new CursoredDataDto<User>([], args.cursor);
+        let following: CursoredDataDto<UserDto> = new CursoredDataDto<UserDto>([], args.cursor);
 
         /** The total number of data fetched. */
         let total: number = 0;
@@ -151,9 +153,9 @@ export class UserService {
      * @param args Additional list arguments.
      * @returns The list of liked tweets of the twitter user with the given id.
      */
-    public async likes(id: string, args: UserListArgsDto): Promise<CursoredDataDto<Tweet>> {
+    public async likes(id: string, args: UserListArgsDto): Promise<CursoredDataDto<TweetDto>> {
         /** The cursored data to be returned. */
-        let likes: CursoredDataDto<Tweet> = new CursoredDataDto<Tweet>([], args.cursor);
+        let likes: CursoredDataDto<TweetDto> = new CursoredDataDto<TweetDto>([], args.cursor);
 
         /** The total number of data fetched. */
         let total: number = 0;

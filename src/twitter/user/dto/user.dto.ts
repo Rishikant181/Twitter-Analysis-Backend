@@ -3,7 +3,7 @@ import { IUser } from 'rettiwt-api';
 /**
  * The details of a single user.
  */
-export class User implements IUser {
+export class UserDto implements IUser {
     /** The rest id of the user. */
     id: string;
 
