@@ -25,7 +25,7 @@ export class Document implements IDocument {
 /**
  * The payload to be sent for analyzing entity sentiment.
  */
-export default class NlpPayLoadDto implements IPayload {
+export class AnalysisPayLoad implements IPayload {
     /** Input document. */
     document: IDocument;
 

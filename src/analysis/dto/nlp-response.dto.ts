@@ -67,7 +67,7 @@ export class Entity implements IEntity {
 /**
  * The entity-level sentiment analysis response message.
  */
-export default class NlpResponseDto implements IResponse {
+export class AnalysisResultDto implements IResponse {
     /** The recognized entities in the input document with associated sentiments. */
     entities: Entity[];
 
