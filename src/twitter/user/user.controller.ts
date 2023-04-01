@@ -1,12 +1,13 @@
 // PACKAGE
 import { Controller, Get, Param, Query, UseFilters } from '@nestjs/common';
-import { CursoredData, Tweet, User } from 'rettiwt-api';
+import { Tweet, User } from 'rettiwt-api';
 
 // SERVICES
 import { UserService } from './user.service';
 
 // DTOs
 import { UserListArgsDto } from './dto/user-list-args.dto';
+import { CursoredDataDto } from '../dto/cursored-list.dto';
 
 // FILTERS
 import { TwitterErrorFilter } from '../twitter.filter';
@@ -22,17 +23,17 @@ export class UserController {
 	}
 
 	@Get(':id/followers')
-	followers(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<User>> {
+	followers(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredDataDto<User>> {
 		return this.userService.followers(id, args);
 	}
 
 	@Get(':id/following')
-	following(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<User>> {
+	following(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredDataDto<User>> {
 		return this.userService.following(id, args);
 	}
 
 	@Get(':id/likes')
-	likes(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredData<Tweet>> {
+	likes(@Param('id') id: string, @Query() args: UserListArgsDto): Promise<CursoredDataDto<Tweet>> {
 		return this.userService.likes(id, args);
 	}
 }

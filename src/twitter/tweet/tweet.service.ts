@@ -1,11 +1,12 @@
 // PACKAGES
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Rettiwt, CursoredData, Tweet, User } from 'rettiwt-api';
+import { Rettiwt, Tweet, User } from 'rettiwt-api';
 
 // DTOs
 import { TweetQueryDto } from './dto/tweet-query.dto';
 import { TweetListArgsDto } from './dto/tweet-list-args.dto';
+import { CursoredDataDto } from '../dto/cursored-list.dto';
 import { AuthKeyDto } from 'src/twitter/auth/dto/auth-key.dto';
 
 /**
@@ -50,13 +51,15 @@ export class TweetService {
      * @param args Additional list arguments.
      * @returns The list of tweets matching the given query.
      */
-    async search(query: TweetQueryDto, args: TweetListArgsDto): Promise<CursoredData<Tweet>> {
-        let tweets: CursoredData<Tweet> = {
-            list: [],
-            next: { value: args.cursor }
-        };
-        let total: number = 0;                                          // To store the total number of data fetched
-        let batchSize: number = 20;                                     // To store the number of data to fetch at once
+    async search(query: TweetQueryDto, args: TweetListArgsDto): Promise<CursoredDataDto<Tweet>> {
+        /** The cursored data to be returned. */
+        let tweets: CursoredDataDto<Tweet> = new CursoredDataDto<Tweet>([], args.cursor);
+        
+        /** The total number of data fetched. */
+        let total: number = 0;
+
+        /** The number of data to fetch at once. */
+        let batchSize: number = 20;
 
         // Fetching batch-wise, as long as total data fetched is less than required
         do {
@@ -93,13 +96,15 @@ export class TweetService {
      * @param args Additional list arguments.
      * @returns The list of likes of the tweet with the given id.
      */
-    async likes(id: string, args: TweetListArgsDto): Promise<CursoredData<User>> {
-        let likes: CursoredData<User> = {
-            list: [],
-            next: { value: args.cursor }
-        };
-        let total: number = 0;                                          // To store the total number of data fetched
-        let batchSize: number = this.batchSize;                         // To store the number of data to fetch at once
+    async likes(id: string, args: TweetListArgsDto): Promise<CursoredDataDto<User>> {
+        /** The cursored data to be returned. */
+        let likes: CursoredDataDto<User> = new CursoredDataDto<User>([], args.cursor);
+
+        /** The total number of data fetched. */
+        let total: number = 0;
+
+        /** The number of data to fetch at once. */
+        let batchSize: number = this.batchSize;
 
         // Fetching batch-wise, as long as total data fetched is less than required
         do {
@@ -136,13 +141,15 @@ export class TweetService {
      * @param args Additional list arguments.
      * @returns The list of retweets of the tweet with the given id.
      */
-    async retweets(id: string, args: TweetListArgsDto): Promise<CursoredData<User>> {
-        let retweets: CursoredData<User> = {
-            list: [],
-            next: { value: args.cursor }
-        };
-        let total: number = 0;                                          // To store the total number of data fetched
-        let batchSize: number = this.batchSize;                         // To store the number of data to fetch at once
+    async retweets(id: string, args: TweetListArgsDto): Promise<CursoredDataDto<User>> {
+        /** The cursored data to be returned. */
+        let retweets: CursoredDataDto<User> = new CursoredDataDto<User>([], args.cursor);
+
+        /** The total number of data fetched. */
+        let total: number = 0;
+
+        /** The number of data to fetch at once. */
+        let batchSize: number = this.batchSize;
 
         // Fetching batch-wise, as long as total data fetched is less than required
         do {
