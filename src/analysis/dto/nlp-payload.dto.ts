@@ -4,7 +4,7 @@ import { IPayload, IDocument, EncodingType, ContentType } from '../interface/nlp
 /**
  * Represents the input to API methods.
  */
-export class NlpDocumentDto implements IDocument {
+export class Document implements IDocument {
     /** The content type of the document. If the type is not set or is TYPE_UNSPECIFIED, returns an INVALID_ARGUMENT error. */
     type: ContentType;
 
@@ -25,7 +25,7 @@ export class NlpDocumentDto implements IDocument {
 /**
  * The payload to be sent for analyzing entity sentiment.
  */
-export class NlpPayLoadDto implements IPayload {
+export default class NlpPayLoadDto implements IPayload {
     /** Input document. */
     document: IDocument;
 
@@ -39,7 +39,7 @@ export class NlpPayLoadDto implements IPayload {
         /** The concatenated string, containing all the input texts as a paragraph. */
         let concatString: string = texts.join('');
 
-        this.document = new NlpDocumentDto(concatString);
+        this.document = new Document(concatString);
         this.encodingType = EncodingType.UTF8;
     }
 }
