@@ -40,4 +40,9 @@ export class InterestsDto implements IInterests {
 
     /** The total number of tweets based on which the analysis was done. */
     total: number;
+
+    constructor() {
+        this.interests = [];
+        this.total = 0;
+    }
 }

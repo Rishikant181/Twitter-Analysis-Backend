@@ -123,5 +123,5 @@ export interface IClassificationCategory {
  */
 export interface IClassificationResult {
     /** Categories representing the input document. */
-    categories: IClassificationCategory;
+    categories: IClassificationCategory[];
 }

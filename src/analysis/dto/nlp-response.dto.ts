@@ -97,5 +97,5 @@ export class ClassificationCategory implements IClassificationCategory {
  */
 export class ClassificationResult implements IClassificationResult {
     /** Categories representing the input document. */
-    categories: ClassificationCategory;
+    categories: ClassificationCategory[];
 }

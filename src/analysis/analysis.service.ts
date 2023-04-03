@@ -6,11 +6,33 @@ import { TwitterService } from 'src/twitter/twitter.service';
 import { NlpService } from './nlp.service';
 
 // DTOs
-import { EntitySentimentResult } from './dto/nlp-response.dto';
+import { EntitySentimentResult, ClassificationResult } from './dto/nlp-response.dto';
+import { TweetDto } from 'src/twitter/tweet/dto/tweet.dto';
+import { Interest, InterestsDto } from './dto/interests.dto';
 
 @Injectable()
 export class AnalysisService {
     constructor(@Inject(TwitterService) private twitter: TwitterService, @Inject(NlpService) private nlp: NlpService) { }
+
+    /**
+     * Fetches the most recent 'count' number of tweets of the Twitter user with the given id.
+     * 
+     * @param id The id of the Twitter user.
+     * @param count The number of tweets to fetch.
+     * 
+     * @returns The most recent 'count' number of Tweets of the given target user.
+     */
+    private async getUserTweets(id: string, count: number): Promise<TweetDto[]> {
+        // Getting the username of the target Twitter user
+        const userName: string = (await this.twitter.api().users.getUserDetails(id)).userName;
+        
+        // Getting the list of tweets to analyze, then extracting only the tweet texts from it
+        const tweets: TweetDto[] = (await this.twitter.api().tweets.getTweets({
+            fromUsers: [userName],
+        }, count)).list;
+
+        return tweets;
+    }
 
     /**
      * Performs an analysis on a Twitter user with the given id, based on most recent 'count' number of tweets.
@@ -21,17 +43,16 @@ export class AnalysisService {
      * @returns The analysis result, based on the most recent 'count' number of tweets.
      */
     async analyzeTweets(id: string, count: number): Promise<EntitySentimentResult> {
-        // Getting the username of the target Twitter user
-        const userName: string = (await this.twitter.api().users.getUserDetails(id)).userName;
-        
-        // Getting the list of tweets to analyze, then extracting only the tweet texts from it
-        const tweets: string[] = (await this.twitter.api().tweets.getTweets({
-            fromUsers: [userName],
-        }, count)).list.map(tweet => tweet.fullText);
+        // Getting the list of tweets' text
+        const tweets: string[] = (await this.getUserTweets(id, count)).map(tweet => tweet.fullText);
 
         // Performaing analysis
         const analysisRes: EntitySentimentResult = await this.nlp.getEntitySentiment(tweets);
 
         return analysisRes;
+    }
+
+    async getInterests(id: string, count: number) {
+        
     }
 }
