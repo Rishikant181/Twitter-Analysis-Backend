@@ -1,4 +1,4 @@
-import { IEntity, IResponse, EntityType, EntityMentionType, IEntityMention, ISentiment, ITextSpan } from '../interface/nlp-response.interface';
+import { IEntity, IEntitySentimentResponse, EntityType, EntityMentionType, IEntityMention, ISentiment, ITextSpan, IClassificationCategory, IClassificationResponse } from '../interface/nlp-response.interface';
 
 /**
  * Represents an output piece of text.
@@ -67,10 +67,35 @@ export class Entity implements IEntity {
 /**
  * The entity-level sentiment analysis response message.
  */
-export class AnalysisResultDto implements IResponse {
+export class EntitySentimentResult implements IEntitySentimentResponse {
     /** The recognized entities in the input document with associated sentiments. */
     entities: Entity[];
 
     /** The language of the text as specified in the request or automatically-detected. */
     language: string;
+}
+
+/**
+ * Represents a category returned from the text classifier.
+ */
+export class ClassificationCategory implements IClassificationCategory {
+    /**
+     * The name of the category representing the document.
+     * The categories are defined here {@link https://cloud.google.com/natural-language/docs/categories}
+     */
+    name: string;
+
+    /** 
+     * The classifier's confidence of the category.  
+     * Number represents how certain the classifier is that this category represents the given text.  
+     */
+    confidence: number;
+}
+
+/**
+ * The document classification response message.
+ */
+export class ClassificationResponse implements IClassificationResponse {
+    /** Categories representing the input document. */
+    categories: ClassificationCategory;
 }

@@ -25,7 +25,7 @@ export class Document implements IDocument {
 /**
  * The payload to be sent for analyzing entity sentiment.
  */
-export class EntitySentimentAnalysisPayLoad implements IEntitySentimentPayload {
+export class EntitySentimentPayLoad implements IEntitySentimentPayload {
     /** Input document. */
     document: Document;
 

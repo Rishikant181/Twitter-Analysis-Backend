@@ -6,7 +6,7 @@ import { TwitterService } from 'src/twitter/twitter.service';
 import { NlpService } from './nlp.service';
 
 // DTOs
-import { AnalysisResultDto } from './dto/nlp-response.dto';
+import { EntitySentimentResult } from './dto/nlp-response.dto';
 
 @Injectable()
 export class AnalysisService {
@@ -20,7 +20,7 @@ export class AnalysisService {
      * 
      * @returns The analysis result, based on the most recent 'count' number of tweets.
      */
-    async analyzeTweets(id: string, count: number): Promise<AnalysisResultDto> {
+    async analyzeTweets(id: string, count: number): Promise<EntitySentimentResult> {
         // Getting the username of the target Twitter user
         const userName: string = (await this.twitter.api().users.getUserDetails(id)).userName;
         
@@ -30,7 +30,7 @@ export class AnalysisService {
         }, count)).list.map(tweet => tweet.fullText);
 
         // Performaing analysis
-        const analysisRes: AnalysisResultDto = await this.nlp.getEntitySentiment(tweets);
+        const analysisRes: EntitySentimentResult = await this.nlp.getEntitySentiment(tweets);
 
         return analysisRes;
     }

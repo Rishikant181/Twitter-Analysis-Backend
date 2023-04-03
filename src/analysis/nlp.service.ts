@@ -3,8 +3,8 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
 // DTOs
-import { EntitySentimentAnalysisPayLoad } from './dto/nlp-payload.dto';
-import { AnalysisResultDto } from './dto/nlp-response.dto';
+import { EntitySentimentPayLoad } from './dto/nlp-payload.dto';
+import { EntitySentimentResult } from './dto/nlp-response.dto';
 
 // CONFIGS
 import gcloudConfig from './config/cloud-nlp';
@@ -18,15 +18,15 @@ export class NlpService {
      * 
      * @returns The aggregate sentiment associated with each entity in the text.
      */
-    async getEntitySentiment(texts: string[]): Promise<AnalysisResultDto> {
+    async getEntitySentiment(texts: string[]): Promise<EntitySentimentResult> {
         // Getting the URL of the API endpoint to be called for sentiment analysis
         const url: string = `${gcloudConfig.BASE_URL}${gcloudConfig.endpoints.ENTITY_SENTIMENT}?key=${gcloudConfig.API_KEY}`;
 
         // Preparing the payload
-        const payload: EntitySentimentAnalysisPayLoad = new EntitySentimentAnalysisPayLoad(texts);
+        const payload: EntitySentimentPayLoad = new EntitySentimentPayLoad(texts);
 
         // Getting the sentiment analysis result
-        const res: AnalysisResultDto = (await axios.post<AnalysisResultDto>(url, payload)).data;
+        const res: EntitySentimentResult = (await axios.post<EntitySentimentResult>(url, payload)).data;
 
         return res;
     }
