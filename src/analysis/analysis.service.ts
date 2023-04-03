@@ -1,6 +1,9 @@
 // PACKAGES
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import axios from 'axios';
+
+// SERVICES
+import { TwitterService } from 'src/twitter/twitter.service';
 
 // DTOs
 import { AnalysisPayLoad } from './dto/nlp-payload.dto';
@@ -11,6 +14,8 @@ import gcloudConfig from './config/cloud-nlp';
 
 @Injectable()
 export class AnalysisService {
+    constructor(@Inject(TwitterService) private twitter: TwitterService) { }
+
     /**
      * Perform entity-wise sentiment analysis on the list of texts.
      * 
@@ -29,5 +34,28 @@ export class AnalysisService {
         const res: AnalysisResultDto = (await axios.post<AnalysisResultDto>(url, payload)).data;
 
         return res;
+    }
+
+    /**
+     * Performs an analysis on a Twitter user with the given id, based on most recent 'count' number of tweets.
+     * 
+     * @param id The id of target Twitter user.
+     * @param count The number of tweets based on which analysis is to be done.
+     * 
+     * @returns The analysis result, based on the most recent 'count' number of tweets.
+     */
+    async analyzeTweets(id: string, count: number): Promise<AnalysisResultDto> {
+        // Getting the username of the target Twitter user
+        const userName: string = (await this.twitter.api().users.getUserDetails(id)).userName;
+        
+        // Getting the list of tweets to analyze, then extracting only the tweet texts from it
+        const tweets: string[] = (await this.twitter.api().tweets.getTweets({
+            fromUsers: [userName],
+        }, count)).list.map(tweet => tweet.fullText);
+
+        // Performaing analysis
+        const analysisRes: AnalysisResultDto = await this.getSentiment(tweets);
+
+        return analysisRes;
     }
 }
