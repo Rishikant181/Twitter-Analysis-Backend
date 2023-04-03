@@ -1,4 +1,4 @@
-import { IEntity, IEntitySentimentResponse, EntityType, EntityMentionType, IEntityMention, ISentiment, ITextSpan, IClassificationCategory, IClassificationResponse } from '../interface/nlp-response.interface';
+import { IEntity, IEntitySentimentResult, EntityType, EntityMentionType, IEntityMention, ISentiment, ITextSpan, IClassificationCategory, IClassificationResult } from '../interface/nlp-response.interface';
 
 /**
  * Represents an output piece of text.
@@ -67,7 +67,7 @@ export class Entity implements IEntity {
 /**
  * The entity-level sentiment analysis response message.
  */
-export class EntitySentimentResult implements IEntitySentimentResponse {
+export class EntitySentimentResult implements IEntitySentimentResult {
     /** The recognized entities in the input document with associated sentiments. */
     entities: Entity[];
 
@@ -95,7 +95,7 @@ export class ClassificationCategory implements IClassificationCategory {
 /**
  * The document classification response message.
  */
-export class ClassificationResponse implements IClassificationResponse {
+export class ClassificationResult implements IClassificationResult {
     /** Categories representing the input document. */
     categories: ClassificationCategory;
 }

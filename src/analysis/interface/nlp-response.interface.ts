@@ -93,7 +93,7 @@ export interface IEntity {
 /**
  * The entity-level sentiment analysis response message.
  */
-export interface IEntitySentimentResponse {
+export interface IEntitySentimentResult {
     /** The recognized entities in the input document with associated sentiments. */
     entities: IEntity[];
 
@@ -121,7 +121,7 @@ export interface IClassificationCategory {
 /**
  * The document classification response message.
  */
-export interface IClassificationResponse {
+export interface IClassificationResult {
     /** Categories representing the input document. */
     categories: IClassificationCategory;
 }
