@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
 // DTOs
-import { AnalysisPayLoad } from './dto/nlp-payload.dto';
+import { EntitySentimentAnalysisPayLoad } from './dto/nlp-payload.dto';
 import { AnalysisResultDto } from './dto/nlp-response.dto';
 
 // CONFIGS
@@ -23,7 +23,7 @@ export class NlpService {
         const url: string = `${gcloudConfig.BASE_URL}${gcloudConfig.endpoints.ENTITY_SENTIMENT}?key=${gcloudConfig.API_KEY}`;
 
         // Preparing the payload
-        const payload: AnalysisPayLoad = new AnalysisPayLoad(texts);
+        const payload: EntitySentimentAnalysisPayLoad = new EntitySentimentAnalysisPayLoad(texts);
 
         // Getting the sentiment analysis result
         const res: AnalysisResultDto = (await axios.post<AnalysisResultDto>(url, payload)).data;

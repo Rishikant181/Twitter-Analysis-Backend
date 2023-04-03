@@ -31,10 +31,18 @@ export enum EncodingType {
 /**
  * The payload to be sent for analyzing entity sentiment.
  */
-export interface IPayload {
+export interface IEntitySentimentPayload {
     /** Input document. */
     document: IDocument;
 
     /** The encoding type used by the API to calculate offsets. */
     encodingType: EncodingType;
+};
+
+/**
+ * The payload to be sent for classifying a document.
+ */
+export interface IClassificationPayload {
+    /** Input document. */
+    document: IDocument;
 };

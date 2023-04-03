@@ -1,5 +1,5 @@
 // INTERFACES
-import { IPayload, IDocument, EncodingType, ContentType } from '../interface/nlp-payload.interface';
+import { IEntitySentimentPayload, IDocument, EncodingType, ContentType, IClassificationPayload } from '../interface/nlp-payload.interface';
 
 /**
  * Represents the input to API methods.
@@ -25,9 +25,9 @@ export class Document implements IDocument {
 /**
  * The payload to be sent for analyzing entity sentiment.
  */
-export class AnalysisPayLoad implements IPayload {
+export class EntitySentimentAnalysisPayLoad implements IEntitySentimentPayload {
     /** Input document. */
-    document: IDocument;
+    document: Document;
 
     /** The encoding type used by the API to calculate offsets. */
     encodingType: EncodingType;
@@ -41,5 +41,20 @@ export class AnalysisPayLoad implements IPayload {
 
         this.document = new Document(concatString);
         this.encodingType = EncodingType.UTF8;
+    }
+}
+
+/**
+ * The payload to be sent for classifying a document.
+ */
+export class ClassificationPayload implements IClassificationPayload {
+    /** Input document. */
+    document: IDocument;
+
+    /**
+     * @param text The text which is to be classified.
+     */
+    constructor(text: string) {
+        this.document = new Document(text);
     }
 }
