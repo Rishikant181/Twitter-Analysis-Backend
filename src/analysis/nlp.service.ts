@@ -2,9 +2,11 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 
-// DTOs
-import { EntitySentimentPayload, ClassificationPayload } from './dto/nlp-payload.dto';
-import { EntitySentimentResult, ClassificationResult } from './dto/nlp-response.dto';
+// MODELS
+import { EntitySentimentPayload } from './models/sentiment-payload.model';
+import { EntitySentimentResponse } from './models/entity-sentiment-response.model';
+import { ClassificationPayload } from './models/classification-payload.model';
+import { ClassificationResponse } from './models/classification-response.model';
 
 // CONFIGS
 import gcloudConfig from './config/cloud-nlp';
@@ -18,7 +20,7 @@ export class NlpService {
      * 
      * @returns The aggregate sentiment associated with each entity in the text.
      */
-    async getEntitySentiment(texts: string[]): Promise<EntitySentimentResult> {
+    async getEntitySentiment(texts: string[]): Promise<EntitySentimentResponse> {
         // Getting the URL of the API endpoint to be called for sentiment analysis
         const url: string = `${gcloudConfig.BASE_URL}${gcloudConfig.endpoints.ENTITY_SENTIMENT}?key=${gcloudConfig.API_KEY}`;
 
@@ -26,7 +28,7 @@ export class NlpService {
         const payload: EntitySentimentPayload = new EntitySentimentPayload(texts);
 
         // Getting the sentiment analysis result
-        const res: EntitySentimentResult = (await axios.post<EntitySentimentResult>(url, payload)).data;
+        const res: EntitySentimentResponse = (await axios.post<EntitySentimentResponse>(url, payload)).data;
 
         return res;
     }
@@ -39,7 +41,7 @@ export class NlpService {
      * 
      * @returns The classification result along with confidence level.
      */
-    async getTextClassification(text: string): Promise<ClassificationResult> {
+    async getTextClassification(text: string): Promise<ClassificationResponse> {
         // Getting the URL of the API endpoint to be called for text classification
         const url: string = `${gcloudConfig.BASE_URL}${gcloudConfig.endpoints.TEXT_CLASSIFICATION}?key=${gcloudConfig.API_KEY}`;
 
@@ -47,7 +49,7 @@ export class NlpService {
         const payload: ClassificationPayload = new ClassificationPayload(text);
 
         // Getting the classification result
-        const res: ClassificationResult = (await axios.post<ClassificationResult>(url, payload)).data;
+        const res: ClassificationResponse = (await axios.post<ClassificationResponse>(url, payload)).data;
 
         return res;
     }

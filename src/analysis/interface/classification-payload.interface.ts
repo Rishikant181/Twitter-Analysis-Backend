@@ -1,4 +1,4 @@
-import { IDocument } from './common.interface';
+import { IDocument } from './document.interface';
 
 /**
  * The payload to be sent for classifying a document.

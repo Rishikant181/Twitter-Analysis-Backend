@@ -1,4 +1,4 @@
-import { IDocument } from './common.interface';
+import { IDocument } from './document.interface';
 
 /**
  * Represents the text encoding that the caller uses to process the output.

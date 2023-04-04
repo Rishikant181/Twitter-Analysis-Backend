@@ -1,7 +1,10 @@
+// INTERFACES
+import { IClassificationCategory, IClassificationResponse } from '../interface/classification-response.interface';
+
 /**
  * Represents a category returned from the text classifier.
  */
-export interface IClassificationCategory {
+export class ClassificationCategory implements IClassificationCategory {
     /**
      * The name of the category representing the document.
      * The categories are defined here {@link https://cloud.google.com/natural-language/docs/categories}
@@ -18,7 +21,7 @@ export interface IClassificationCategory {
 /**
  * The document classification response message.
  */
-export interface IClassificationResponse {
+export class ClassificationResponse implements IClassificationResponse {
     /** Categories representing the input document. */
-    categories: IClassificationCategory[];
+    categories: ClassificationCategory[];
 }
