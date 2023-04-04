@@ -8,8 +8,8 @@ import { AnalysisService } from './analysis.service';
 export class AnalysisController {
 	constructor(private readonly analysisService: AnalysisService) { }
 
-	@Get(':id/interests')
-	interests(@Param('id') id: string, @Query('count') count: number) {
-		return this.analysisService.getInterests(id, count);
+	@Get('interests')
+	interests(@Query('id') id: string, @Query('count') count: number) {
+		return this.analysisService.interestsFromTweets(id, count);
 	}
 }

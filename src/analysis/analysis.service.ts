@@ -27,7 +27,7 @@ export class AnalysisService {
     /**
      * Fetches the most recent 'count' number of tweets of the Twitter user with the given id.
      * 
-     * @param id The id of the Twitter user.
+     * @param id The id/username of the Twitter user.
      * @param count The number of tweets to fetch.
      * 
      * @returns The most recent 'count' number of Tweets of the given target user.
@@ -45,12 +45,12 @@ export class AnalysisService {
     /**
      * Performs an analysis on a Twitter user with the given id, based on most recent 'count' number of tweets.
      * 
-     * @param id The id of target Twitter user.
+     * @param id The id/username of target Twitter user.
      * @param count The number of tweets based on which analysis is to be done.
      * 
      * @returns The analysis result, based on the most recent 'count' number of tweets.
      */
-    async analyzeTweets(id: string, count: number): Promise<EntitySentimentResponse> {
+    async sentimentFromTweets(id: string, count: number): Promise<EntitySentimentResponse> {
         // Getting the list of tweets' text
         const tweets: string[] = (await this.getUserTweets(id, count)).map(tweet => tweet.fullText);
 
@@ -63,12 +63,12 @@ export class AnalysisService {
     /**
      * Analyzes the most recent 'count' number of tweets of the target user to determine their interests.
      * 
-     * @param id The id of the Twitter user whose interests are to be analyzed.
+     * @param id The id/username of the Twitter user whose interests are to be analyzed.
      * @param count The number of tweets to anaylyze.
      * 
      * @returns The percentage interests of the Twitter user.
      */
-    async getInterests(id: string, count: number) {
+    async interestsFromTweets(id: string, count: number) {
         /** The frequence of each category in the list of tweets. */
         let categoryFreq: { [key: string]: number } = {};
 
@@ -86,6 +86,7 @@ export class AnalysisService {
             // Classifying the tweet
             const res: ClassificationResponse = await this.nlp.getTextClassification(tweet);
 
+            // Getting the dominant predicted category from the response
             let category: string = res.categories[0].name;
 
             /**
