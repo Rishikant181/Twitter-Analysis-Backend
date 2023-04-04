@@ -1,26 +1,9 @@
-/**
- * The type of the entity.
- */
-export enum EntityType {
-    UNKNOWN = 'UNKNOWN',
-    PERSON = 'PERSON',
-    LOCATION = 'LOCATION',
-    ORGANIZATON = 'ORGANIZATION',
-    EVENT = 'EVENT',
-    WORK_OF_ART = 'WORK_OF_ART',
-    CONSUMER_GOOD = 'CONSUMER_GOOD',
-    OTHER = 'OTHER',
-    PHONE_NUMER = 'PHONE_NUMBER',
-    ADDRESS = 'ADDRESS',
-    DATE = 'DATE',
-    NUMBER = 'NUMBER',
-    PRICE = 'PRICE'
-};
+import { IEntity, IEntitySentimentResponse, EntityType, EntityMentionType, IEntityMention, ISentiment, ITextSpan } from '../interface/entity-sentiment-response.interface';
 
 /**
  * Represents an output piece of text.
  */
-export interface ITextSpan {
+export class TextSpan implements ITextSpan {
     /** The content of the output text. */
     content: string;
 
@@ -29,18 +12,9 @@ export interface ITextSpan {
 };
 
 /**
- * The type of noun that the entity is.
- */
-export enum EntityMentionType {
-    TYPE_UNKNOWN = 'TYPE_UNKNOWN',
-    PROPER = 'PROPER',
-    COMMON = 'COMMON'
-};
-
-/**
  * Represents the feeling associated with the entire text or entities in the text.
  */
-export interface ISentiment {
+export class Sentiment implements ISentiment {
     /** The absolute magnitude of sentiment, in [0, +inf) range. */
     magnitude: number;
 
@@ -52,7 +26,7 @@ export interface ISentiment {
  * Represents a mention for an entity in the text.  
  * Currently, proper noun mentions are supported.  
  */
-export interface IEntityMention {
+export class EntityMention implements IEntityMention {
     /** The mention text. */
     text: ITextSpan;
 
@@ -60,13 +34,13 @@ export interface IEntityMention {
     type: EntityMentionType;
 
     /** The sentiment expressed for this mention of the entity in the provided document. */
-    sentiment: ISentiment;
+    sentiment: Sentiment;
 }
 
 /**
  * Represents a phrase in the text that is a known entity, such as a person, an organization, or location.
  */
-export interface IEntity {
+export class Entity implements IEntity {
     /** The representative name for the entity. */
     name: string;
 
@@ -87,15 +61,15 @@ export interface IEntity {
     mentions: IEntityMention[];
 
     /** The aggregate sentiment expressed for this entity in the provided document. */
-    sentiment: ISentiment;
+    sentiment: Sentiment;
 }
 
 /**
  * The entity-level sentiment analysis response message.
  */
-export interface IResponse {
+export class EntitySentimentResponse implements IEntitySentimentResponse {
     /** The recognized entities in the input document with associated sentiments. */
-    entities: IEntity[];
+    entities: Entity[];
 
     /** The language of the text as specified in the request or automatically-detected. */
     language: string;
