@@ -52,7 +52,53 @@ export class AnalysisService {
         return analysisRes;
     }
 
+    /**
+     * Analyzes the most recent 'count' number of tweets of the target user to determine their interests.
+     * 
+     * @param id The id of the Twitter user whose interests are to be analyzed.
+     * @param count The number of tweets to anaylyze.
+     * 
+     * @returns The percentage interests of the Twitter user.
+     */
     async getInterests(id: string, count: number) {
-        
+        /** The frequence of each category in the list of tweets. */
+        let categoryFreq: { [key: string]: number } = {};
+
+        /** The interests of the Twitter user. */
+        let result: InterestsDto = new InterestsDto();
+
+        // Getting the list of tweets' text
+        const tweets: string[] = (await this.getUserTweets(id, count)).map(tweet => tweet.fullText);
+
+        // Getting the number of tweets to be analyzed
+        let total: number = tweets.length;
+
+        // Iterating over each tweet
+        for (let tweet of tweets) {
+            // Classifying the tweet
+            const res: ClassificationResult = await this.nlp.getTextClassification(tweet);
+
+            // Getting the dominant category name
+            const category: string = res.categories[0].name;
+
+            // If interest has not been stored earlier, then set frequency to 1
+            if (!categoryFreq[category]) {
+                categoryFreq[category] = 1;
+            }
+            // If interest is already stored earlier, the increment frequency
+            else {
+                categoryFreq[category]++;
+            }
+        }
+
+        // Storing the frequency in final result
+        for (let [name, freq] of Object.entries(categoryFreq)) {
+            result.interests.push(new Interest(name, freq, total));
+        }
+
+        // Storing the total number of tweets in result
+        result.total = total;
+
+        return result;
     }
 }

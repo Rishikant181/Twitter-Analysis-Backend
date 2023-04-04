@@ -51,6 +51,12 @@ export class ClassificationPayload implements IClassificationPayload {
     /** Input document. */
     document: IDocument;
 
+    classificationModelOptions = {
+        v2Model: {
+            contentCategoriesVersion: "V1"
+        }
+    }
+
     /**
      * @param text The text which is to be classified.
      */
