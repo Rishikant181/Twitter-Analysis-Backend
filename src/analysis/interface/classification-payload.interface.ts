@@ -17,7 +17,7 @@ export enum ContentCategoriesVersion {
 /**
  * Options for the V2 model.
  */
-export interface V2Model {
+export interface IV2Model {
     /** The content categories used for classification. */
     contentCategoriesVersion: ContentCategoriesVersion;
 }
@@ -27,7 +27,7 @@ export interface V2Model {
  */
 export interface IClassificationModelOptions {
     /** The classification model to use. */
-    v2Model: V2Model;
+    v2Model: IV2Model;
 }
 
 /**
