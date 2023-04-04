@@ -86,14 +86,13 @@ export class AnalysisService {
             // Classifying the tweet
             const res: ClassificationResponse = await this.nlp.getTextClassification(tweet);
 
-            // Getting the dominant category name
-            const category: string = res.categories[0].name;
+            let category: string = res.categories[0].name;
 
             /**
              * If category has not been stored in freq map, set it's freq to one.
              * Else, increment freq.
              */
-            categoryFreq[category] = categoryFreq[category] ? categoryFreq[category]++ : 1;
+            categoryFreq[category] = (categoryFreq[category] != undefined) ? (categoryFreq[category] + 1) : 1;
         }
 
         // Storing the frequency in final result
