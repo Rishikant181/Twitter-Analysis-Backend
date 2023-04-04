@@ -81,14 +81,11 @@ export class AnalysisService {
             // Getting the dominant category name
             const category: string = res.categories[0].name;
 
-            // If interest has not been stored earlier, then set frequency to 1
-            if (!categoryFreq[category]) {
-                categoryFreq[category] = 1;
-            }
-            // If interest is already stored earlier, the increment frequency
-            else {
-                categoryFreq[category]++;
-            }
+            /**
+             * If category has not been stored in freq map, set it's freq to one.
+             * Else, increment freq.
+             */
+            categoryFreq[category] = categoryFreq[category] ? categoryFreq[category]++ : 1;
         }
 
         // Storing the frequency in final result

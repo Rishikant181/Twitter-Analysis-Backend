@@ -1,4 +1,4 @@
-import { IEntity, IEntitySentimentResult, EntityType, EntityMentionType, IEntityMention, ISentiment, ITextSpan, IClassificationCategory, IClassificationResult } from '../interface/nlp-response.interface';
+import { IEntity, IEntitySentimentResult, EntityType, EntityMentionType, IEntityMention, ISentiment, ITextSpan, IClassificationCategory, IClassificationResult } from '../interface/sentiment-response.interface';
 
 /**
  * Represents an output piece of text.
