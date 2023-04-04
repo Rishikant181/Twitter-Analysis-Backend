@@ -3,6 +3,8 @@ import { Injectable, Inject } from '@nestjs/common';
 
 // SERVICES
 import { TwitterService } from 'src/twitter/twitter.service';
+import { TweetService } from 'src/twitter/tweet/tweet.service';
+import { UserService } from 'src/twitter/user/user.service';
 import { NlpService } from './nlp.service';
 
 // MODELS
@@ -15,7 +17,12 @@ import { Interest, InterestsDto } from './dto/interests.dto';
 
 @Injectable()
 export class AnalysisService {
-    constructor(@Inject(TwitterService) private twitter: TwitterService, @Inject(NlpService) private nlp: NlpService) { }
+    constructor(
+        @Inject(TwitterService) private twitter: TwitterService,
+        @Inject(TweetService) private tweets: TweetService,
+        @Inject(UserService) private users: UserService,
+        @Inject(NlpService) private nlp: NlpService
+    ) { }
 
     /**
      * Fetches the most recent 'count' number of tweets of the Twitter user with the given id.
@@ -27,12 +34,10 @@ export class AnalysisService {
      */
     private async getUserTweets(id: string, count: number): Promise<TweetDto[]> {
         // Getting the username of the target Twitter user
-        const userName: string = (await this.twitter.api().users.getUserDetails(id)).userName;
+        const userName: string = (await this.users.find(id)).userName;
         
         // Getting the list of tweets to analyze, then extracting only the tweet texts from it
-        const tweets: TweetDto[] = (await this.twitter.api().tweets.getTweets({
-            fromUsers: [userName],
-        }, count)).list;
+        const tweets: TweetDto[] = (await this.tweets.search({ fromUsers: [userName] }, { count: count })).list;
 
         return tweets;
     }
