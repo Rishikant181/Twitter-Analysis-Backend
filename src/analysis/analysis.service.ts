@@ -81,13 +81,17 @@ export class AnalysisService {
         // Getting the number of tweets to be analyzed
         let total: number = tweets.length;
 
-        // Iterating over each tweet
-        for (let tweet of tweets) {
-            // Classifying the tweet
-            const res: ClassificationResponse = await this.nlp.getTextClassification(tweet);
+        // Classifying the tweets list
+        const res: ClassificationResponse[] = await this.nlp.getTextClassification(tweets);
 
+        // Iterating over each result
+        for (let classification of res) {
             // Getting the dominant predicted category from the response
-            let category: string = res.categories[0].name;
+            /**
+             * If the classfier failed to indentify category, returning 'Other' for it.
+             * Else, the returned category name is used.
+             */
+            let category: string = classification.categories[0] ? classification.categories[0].name : 'Other';
 
             /**
              * If category has not been stored in freq map, set it's freq to one.

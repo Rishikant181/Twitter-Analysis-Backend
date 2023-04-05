@@ -1,6 +1,6 @@
 // PACKAGES
 import { Injectable } from '@nestjs/common';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 // MODELS
 import { EntitySentimentPayload } from './models/sentiment-payload.model';
@@ -37,19 +37,31 @@ export class NlpService {
      * Perform classification on the given text to determine which category the text belongs to.
      * The categories are defined here {@link https://cloud.google.com/natural-language/docs/categories}
      * 
-     * @param text The text to be classified.
+     * @param texts The list of text to be classified.
      * 
      * @returns The classification result along with confidence level.
      */
-    async getTextClassification(text: string): Promise<ClassificationResponse> {
+    async getTextClassification(texts: string[]): Promise<ClassificationResponse[]> {
+        /** The list of response promises from different threads. */
+        let promiseList: Promise<AxiosResponse<ClassificationResponse>>[] = [];
+
+        /** The list of classification results of the list of text. */
+        let res: ClassificationResponse[] = [];
+
         // Getting the URL of the API endpoint to be called for text classification
         const url: string = `${gcloudConfig.BASE_URL}${gcloudConfig.endpoints.TEXT_CLASSIFICATION}?key=${gcloudConfig.API_KEY}`;
 
-        // Preparing the payload
-        const payload: ClassificationPayload = new ClassificationPayload(text);
+        // Running classification on each text
+        for (let text of texts) {
+            // Preparing the payload
+            const payload: ClassificationPayload = new ClassificationPayload(text);
 
-        // Getting the classification result
-        const res: ClassificationResponse = (await axios.post<ClassificationResponse>(url, payload)).data;
+            // Getting the classification result and adding the promise to the list of promises
+            promiseList.push(axios.post<ClassificationResponse>(url, payload));
+        }
+
+        // Waiting for all the promises to be resolved, then extracting data from each of the promise
+        res = (await Promise.all(promiseList)).map(res => res.data);
 
         return res;
     }
