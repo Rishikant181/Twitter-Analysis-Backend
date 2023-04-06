@@ -1,5 +1,5 @@
 // PACKAGES
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 
 // SERVICES
 import { AnalysisService } from './analysis.service';
