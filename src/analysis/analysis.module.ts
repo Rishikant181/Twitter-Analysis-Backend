@@ -13,13 +13,6 @@ import { AnalysisController } from './analysis.controller';
 
 @Module({
 	controllers: [AnalysisController],
-	providers: [
-		AnalysisService,
-		TwitterService,
-		TweetService,
-		UserService,
-		NlpService
-	]
+	providers: [AnalysisService, TwitterService, TweetService, UserService, NlpService],
 })
-
-export class AnalysisModule { }
+export class AnalysisModule {}

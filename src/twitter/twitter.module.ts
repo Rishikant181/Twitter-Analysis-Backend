@@ -11,27 +11,26 @@ import { TweetModule } from './tweet/tweet.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-    imports: [
-        UserModule,
-        TweetModule,
-        AuthModule,
-        RouterModule.register([
-            {
-                path: 'twitter',
-                module: UserModule
-            },
-            {
-                path: 'twitter',
-                module: TweetModule
-            },
-            {
-                path: 'twitter',
-                module: AuthModule
-            },
-        ])
-    ],
-    controllers: [],
-    providers: [TwitterService],
+	imports: [
+		UserModule,
+		TweetModule,
+		AuthModule,
+		RouterModule.register([
+			{
+				path: 'twitter',
+				module: UserModule,
+			},
+			{
+				path: 'twitter',
+				module: TweetModule,
+			},
+			{
+				path: 'twitter',
+				module: AuthModule,
+			},
+		]),
+	],
+	controllers: [],
+	providers: [TwitterService],
 })
-
-export class TwitterModule { }
+export class TwitterModule {}

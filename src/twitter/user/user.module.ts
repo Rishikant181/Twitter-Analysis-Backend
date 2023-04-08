@@ -11,8 +11,7 @@ import { TwitterService } from '../twitter.service';
 import { UserController } from './user.controller';
 
 @Module({
-    controllers: [UserController],
-    providers: [UserService, TwitterService]
+	controllers: [UserController],
+	providers: [UserService, TwitterService],
 })
-
-export class UserModule { }
+export class UserModule {}

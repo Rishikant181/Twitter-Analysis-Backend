@@ -17,8 +17,8 @@ import { TwitterErrorFilter } from '../twitter.filter';
 @Controller('tweet')
 @UseFilters(new TwitterErrorFilter())
 export class TweetController {
-	constructor(private readonly tweetService: TweetService) { }
-	
+	constructor(private readonly tweetService: TweetService) {}
+
 	@Post('/')
 	findTweets(@Body() query: TweetQueryDto, @Query() args: TweetListArgsDto): Promise<CursoredDataDto<TweetDto>> {
 		return this.tweetService.search(query, args);

@@ -16,7 +16,7 @@ import { TwitterErrorFilter } from '../twitter.filter';
 @Controller('user')
 @UseFilters(new TwitterErrorFilter())
 export class UserController {
-	constructor(private readonly userService: UserService) { }
+	constructor(private readonly userService: UserService) {}
 
 	@Get(':id')
 	find(@Param('id') id: string): Promise<UserDto> {

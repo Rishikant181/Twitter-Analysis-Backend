@@ -12,7 +12,6 @@ import { AuthController } from './auth.controller';
 
 @Module({
 	controllers: [AuthController],
-	providers: [AuthService, TwitterService]
+	providers: [AuthService, TwitterService],
 })
-
-export class AuthModule { }
+export class AuthModule {}

@@ -8,6 +8,7 @@ module.exports = {
 	plugins: ['@typescript-eslint/eslint-plugin'],
 	extends: [
 		'plugin:@typescript-eslint/recommended',
+		'plugin:@typescript-eslint/recommended-requiring-type-checking',
 		'plugin:prettier/recommended',
 	],
 	root: true,
@@ -17,9 +18,35 @@ module.exports = {
 	},
 	ignorePatterns: ['.eslintrc.js'],
 	rules: {
-		'@typescript-eslint/interface-name-prefix': 'off',
-		'@typescript-eslint/explicit-function-return-type': 'off',
-		'@typescript-eslint/explicit-module-boundary-types': 'off',
-		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/naming-convention': [
+			'warn',
+			{
+				selector: ['class'],
+				format: ['PascalCase'],
+			},
+			{
+				selector: 'interface',
+				format: ['PascalCase'],
+				prefix: ['I'],
+			},
+			{
+				selector: 'enum',
+				format: ['PascalCase'],
+				prefix: ['E'],
+			},
+			{
+				selector: ['variableLike', 'memberLike'],
+				format: ['camelCase'],
+			},
+		],
+		'@typescript-eslint/explicit-function-return-type': 'error',
+		'@typescript-eslint/explicit-module-boundary-types': 'error',
+		'@typescript-eslint/no-explicit-any': 'warn',
+		'@typescript-eslint/no-extraneous-class': [
+			'warn',
+			{
+				allowEmpty: true,
+			},
+		],
 	},
 };

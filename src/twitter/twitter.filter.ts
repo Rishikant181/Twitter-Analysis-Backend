@@ -8,30 +8,27 @@ import { DataValidationError } from 'rettiwt-api';
  */
 @Catch(Error)
 export class TwitterErrorFilter implements ExceptionFilter {
-    catch(error: Error, host: ArgumentsHost) {
-        // Getting the HTTP communication stream
-        const http = host.switchToHttp();
+	catch(error: Error, host: ArgumentsHost) {
+		// Getting the HTTP communication stream
+		const http = host.switchToHttp();
 
-        // Getting the HTTP request
-        const request: Request = http.getRequest<Request>();
+		// Getting the HTTP request
+		const request: Request = http.getRequest<Request>();
 
-        // Getting the HTTP response
-        const response: Response = http.getResponse<Response>();
+		// Getting the HTTP response
+		const response: Response = http.getResponse<Response>();
 
-        // If any validation error found
-        if (error instanceof DataValidationError) {
-            response
-            .json(error);
-        }
-        // If the error is an HttpException
-        else if (error instanceof HttpException){
-            response
-            .status(error.getStatus())
-            .json(error.getResponse());
-        }
-        // If can't identify error
-        else {
-            response.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+		// If any validation error found
+		if (error instanceof DataValidationError) {
+			response.json(error);
+		}
+		// If the error is an HttpException
+		else if (error instanceof HttpException) {
+			response.status(error.getStatus()).json(error.getResponse());
+		}
+		// If can't identify error
+		else {
+			response.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

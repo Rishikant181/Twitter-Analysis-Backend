@@ -12,7 +12,6 @@ import { TweetController } from './tweet.controller';
 
 @Module({
 	controllers: [TweetController],
-	providers: [TweetService, TwitterService]
+	providers: [TweetService, TwitterService],
 })
-
-export class TweetModule { }
+export class TweetModule {}
