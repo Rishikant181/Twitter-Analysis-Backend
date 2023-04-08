@@ -17,5 +17,6 @@ export class AuthKeyDto implements IAuthCookie {
 	ct0: string;
 
 	/** The authentication token used while logging in to the account. */
+	// eslint-disable-next-line
 	auth_token: string;
 }

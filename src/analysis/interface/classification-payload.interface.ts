@@ -3,7 +3,7 @@ import { IDocument } from './document.interface';
 /**
  * The content categories used for classification.
  */
-export enum ContentCategoriesVersion {
+export enum EContentCategoriesVersion {
 	/** If ContentCategoriesVersion is not specified, this option will default to V1. */
 	CONTENT_CATEGORIES_VERSION_UNSPECIFIED = 'CONTENT_CATEGORIES_VERSION_UNSPECIFIED',
 
@@ -19,7 +19,7 @@ export enum ContentCategoriesVersion {
  */
 export interface IV2Model {
 	/** The content categories used for classification. */
-	contentCategoriesVersion: ContentCategoriesVersion;
+	contentCategoriesVersion: EContentCategoriesVersion;
 }
 
 /**

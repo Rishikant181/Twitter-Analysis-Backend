@@ -38,6 +38,10 @@ module.exports = {
 				selector: ['variableLike', 'memberLike'],
 				format: ['camelCase'],
 			},
+			{
+				selector: 'enumMember',
+				format: ['UPPER_CASE'],
+			},
 		],
 		'@typescript-eslint/explicit-function-return-type': 'error',
 		'@typescript-eslint/explicit-module-boundary-types': 'error',

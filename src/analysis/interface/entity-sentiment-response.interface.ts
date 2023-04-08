@@ -1,7 +1,7 @@
 /**
  * The type of the entity.
  */
-export enum EntityType {
+export enum EEntityType {
 	UNKNOWN = 'UNKNOWN',
 	PERSON = 'PERSON',
 	LOCATION = 'LOCATION',
@@ -31,7 +31,7 @@ export interface ITextSpan {
 /**
  * The type of noun that the entity is.
  */
-export enum EntityMentionType {
+export enum EEntityMentionType {
 	TYPE_UNKNOWN = 'TYPE_UNKNOWN',
 	PROPER = 'PROPER',
 	COMMON = 'COMMON',
@@ -57,7 +57,7 @@ export interface IEntityMention {
 	text: ITextSpan;
 
 	/** The type of the entity mention. */
-	type: EntityMentionType;
+	type: EEntityMentionType;
 
 	/** The sentiment expressed for this mention of the entity in the provided document. */
 	sentiment: ISentiment;
@@ -71,7 +71,7 @@ export interface IEntity {
 	name: string;
 
 	/** The entity type. */
-	type: EntityType;
+	type: EEntityType;
 
 	/**
 	 * The salience score associated with the entity in the [0, 1.0] range.

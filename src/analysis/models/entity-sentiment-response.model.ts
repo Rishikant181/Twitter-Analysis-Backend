@@ -1,8 +1,8 @@
 import {
 	IEntity,
 	IEntitySentimentResponse,
-	EntityType,
-	EntityMentionType,
+	EEntityType,
+	EEntityMentionType,
 	IEntityMention,
 	ISentiment,
 	ITextSpan,
@@ -39,7 +39,7 @@ export class EntityMention implements IEntityMention {
 	text: ITextSpan;
 
 	/** The type of the entity mention. */
-	type: EntityMentionType;
+	type: EEntityMentionType;
 
 	/** The sentiment expressed for this mention of the entity in the provided document. */
 	sentiment: Sentiment;
@@ -53,7 +53,7 @@ export class Entity implements IEntity {
 	name: string;
 
 	/** The entity type. */
-	type: EntityType;
+	type: EEntityType;
 
 	/**
 	 * The salience score associated with the entity in the [0, 1.0] range.

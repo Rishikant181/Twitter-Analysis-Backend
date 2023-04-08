@@ -2,7 +2,7 @@
 import { Document } from './document.model';
 
 // INTERFACES
-import { IEntitySentimentPayload, EncodingType } from '../interface/sentiment-payload.interface';
+import { IEntitySentimentPayload, EEncodingType } from '../interface/sentiment-payload.interface';
 
 /**
  * The payload to be sent for analyzing entity sentiment.
@@ -12,7 +12,7 @@ export class EntitySentimentPayload implements IEntitySentimentPayload {
 	document: Document;
 
 	/** The encoding type used by the API to calculate offsets. */
-	encodingType: EncodingType;
+	encodingType: EEncodingType;
 
 	/**
 	 * @param texts The list of texts whose sentiment is to be analyzed.
@@ -22,6 +22,6 @@ export class EntitySentimentPayload implements IEntitySentimentPayload {
 		const concatString: string = texts.join('');
 
 		this.document = new Document(concatString);
-		this.encodingType = EncodingType.UTF8;
+		this.encodingType = EEncodingType.UTF8;
 	}
 }

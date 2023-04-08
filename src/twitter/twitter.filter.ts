@@ -1,6 +1,6 @@
 // PACKAGES
 import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { DataValidationError } from 'rettiwt-api';
 
 /**
@@ -8,12 +8,9 @@ import { DataValidationError } from 'rettiwt-api';
  */
 @Catch(Error)
 export class TwitterErrorFilter implements ExceptionFilter {
-	catch(error: Error, host: ArgumentsHost) {
+	catch(error: Error, host: ArgumentsHost): void {
 		// Getting the HTTP communication stream
 		const http = host.switchToHttp();
-
-		// Getting the HTTP request
-		const request: Request = http.getRequest<Request>();
 
 		// Getting the HTTP response
 		const response: Response = http.getResponse<Response>();

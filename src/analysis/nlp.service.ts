@@ -22,7 +22,7 @@ export class NlpService {
 	 */
 	async getEntitySentiment(texts: string[]): Promise<EntitySentimentResponse> {
 		// Getting the URL of the API endpoint to be called for sentiment analysis
-		const url = `${gcloudConfig.BASE_URL}${gcloudConfig.endpoints.ENTITY_SENTIMENT}?key=${gcloudConfig.API_KEY}`;
+		const url = `${gcloudConfig.baseUrl}${gcloudConfig.endpoints.entitySentiment}?key=${gcloudConfig.apiKey}`;
 
 		// Preparing the payload
 		const payload: EntitySentimentPayload = new EntitySentimentPayload(texts);
@@ -49,7 +49,7 @@ export class NlpService {
 		let res: ClassificationResponse[] = [];
 
 		// Getting the URL of the API endpoint to be called for text classification
-		const url = `${gcloudConfig.BASE_URL}${gcloudConfig.endpoints.TEXT_CLASSIFICATION}?key=${gcloudConfig.API_KEY}`;
+		const url = `${gcloudConfig.baseUrl}${gcloudConfig.endpoints.textClassification}?key=${gcloudConfig.apiKey}`;
 
 		// Running classification on each text
 		for (const text of texts) {

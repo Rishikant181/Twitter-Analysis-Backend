@@ -3,7 +3,7 @@ import { IDocument } from './document.interface';
 /**
  * Represents the text encoding that the caller uses to process the output.
  */
-export enum EncodingType {
+export enum EEncodingType {
 	NONE = 'NONE',
 	UTF8 = 'UTF8',
 	UTF16 = 'UTF16',
@@ -18,5 +18,5 @@ export interface IEntitySentimentPayload {
 	document: IDocument;
 
 	/** The encoding type used by the API to calculate offsets. */
-	encodingType: EncodingType;
+	encodingType: EEncodingType;
 }

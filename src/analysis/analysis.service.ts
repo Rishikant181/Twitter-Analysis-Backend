@@ -68,7 +68,7 @@ export class AnalysisService {
 	 *
 	 * @returns The percentage interests of the Twitter user.
 	 */
-	async interestsFromTweets(id: string, count: number) {
+	async interestsFromTweets(id: string, count: number): Promise<InterestsDto> {
 		/** The frequence of each category in the list of tweets. */
 		const categoryFreq: { [key: string]: number } = {};
 

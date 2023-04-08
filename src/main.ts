@@ -6,7 +6,7 @@ import * as CookieParser from 'cookie-parser';
 // MODULES
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
 	// Initializing new NestJS app
 	const app = await NestFactory.create(AppModule);
 
@@ -20,4 +20,4 @@ async function bootstrap() {
 	await app.listen(3000);
 }
 
-bootstrap();
+void bootstrap();

@@ -1,7 +1,6 @@
 // PACKAGES
 import { Type } from 'class-transformer';
 import { IsInt, IsString, IsOptional, Min } from 'class-validator';
-import { IListArgs } from 'rettiwt-api';
 
 export class UserListArgsDto {
 	/** The number of data items to fetch.

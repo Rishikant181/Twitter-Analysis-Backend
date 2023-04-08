@@ -17,10 +17,11 @@ export class TwitterService {
 	constructor(@Inject(REQUEST) private request: Request) {
 		// Getting the API keys from request header
 		this.apiKey = {
-			auth_token: request.headers['auth_token'],
-			ct0: request.headers['ct0'],
-			kdt: request.headers['kdt'],
-			twid: request.headers['twid'],
+			// eslint-disable-next-line
+			auth_token: request.headers['auth_token'] as string,
+			ct0: request.headers['ct0'] as string,
+			kdt: request.headers['kdt'] as string,
+			twid: request.headers['twid'] as string,
 		};
 	}
 

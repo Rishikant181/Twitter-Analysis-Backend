@@ -5,7 +5,7 @@ import { Document } from './document.model';
 import {
 	IClassificationModelOptions,
 	IClassificationPayload,
-	ContentCategoriesVersion,
+	EContentCategoriesVersion,
 } from '../interface/classification-payload.interface';
 
 /**
@@ -13,10 +13,10 @@ import {
  */
 export class V2Model implements V2Model {
 	/** The content categories used for classification. */
-	contentCategoriesVersion: ContentCategoriesVersion;
+	contentCategoriesVersion: EContentCategoriesVersion;
 
 	constructor() {
-		this.contentCategoriesVersion = ContentCategoriesVersion.V2;
+		this.contentCategoriesVersion = EContentCategoriesVersion.V2;
 	}
 }
 
