@@ -5,6 +5,7 @@ import { AccountService } from './account.service';
 import { AccountController } from './account.controller';
 import { Account, AccountSchema } from './schema/account.schema';
 import { AuthService } from 'src/twitter/auth/auth.service';
+import { TwitterService } from 'src/twitter/twitter.service';
 
 @Module({
 	imports: [
@@ -24,6 +25,6 @@ import { AuthService } from 'src/twitter/auth/auth.service';
 		]),
 	],
 	controllers: [AccountController],
-	providers: [AccountService, AuthService],
+	providers: [AccountService, TwitterService, AuthService],
 })
-export class AccountModule {}
+export class AccountModule { }
