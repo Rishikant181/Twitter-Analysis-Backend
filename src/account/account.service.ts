@@ -30,9 +30,16 @@ export class AccountService {
 		// Getting the account details of the account with the given email
 		const account: Account = await this.accountModel.findOne({ email: credential.email });
 
-		// If account does not exist, then login to twitter
+		// If account does not exist
 		if (!account) {
-			return await this.auth.login(credential);
+			// Logging in to twitter and getting the keys
+			const keys: AuthKeyDto = await this.auth.login(credential);
+
+			// Storing the account details in db
+			await new this.accountModel({ ...credential, ...keys }).save()
+
+			// Returning the keys
+			return keys;
 		}
 		// If account exists, check password
 		else if (credential.password == account.password) {
