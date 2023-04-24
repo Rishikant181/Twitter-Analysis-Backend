@@ -30,7 +30,7 @@
 		"cookie-parser": "1.4.6",
 		"cookiejar": "2.1.4",
 		"reflect-metadata": "0.1.13",
-		"rettiwt-api": "1.1.5",
+		"rettiwt-api": "1.1.7",
 		"rxjs": "7.2.0"
 	},
 	"devDependencies": {

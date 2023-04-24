@@ -59,7 +59,7 @@ export class TweetService {
 			batchSize = args.count - total <= batchSize ? args.count - total : batchSize;
 
 			// Fetching a single batch
-			const data = await this.twitter.api().tweets.getTweets(query, batchSize, tweets.next.value);
+			const data = await this.twitter.api(true).tweets.getTweets(query, batchSize, tweets.next.value);
 
 			// If no additional data found
 			if (!data.list.length) {
