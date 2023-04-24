@@ -13,37 +13,55 @@ export class Account implements IAuthCookie {
 	/**
 	 * The email id of user.
 	 */
-	@Prop()
+	@Prop({
+		type: String,
+		required: true,
+	})
 	email: string;
 
 	/**
 	 * The password for the account.
 	 */
-	@Prop()
+	@Prop({
+		type: String,
+		required: true,
+	})
 	password: string;
 
 	/**
 	 * Token used to authenticate a device.
 	 */
-	@Prop()
+	@Prop({
+		type: String,
+		required: true,
+	})
 	kdt: string;
 
 	/**
 	 *  Token used to authenticate a user using a Twitter ID.
 	 */
-	@Prop()
+	@Prop({
+		type: String,
+		required: true,
+	})
 	twid: string;
 
 	/**
 	 *  The CSRF token of the session.
 	 */
-	@Prop()
+	@Prop({
+		type: String,
+		required: true,
+	})
 	ct0: string;
 
 	/**
 	 *  The authentication token used while logging in to the account.
 	 */
-	@Prop()
+	@Prop({
+		type: String,
+		required: true,
+	})
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	auth_token: string;
 }
