@@ -13,6 +13,12 @@ export class CredentialDto {
 	email: string;
 
 	/**
+	 * The username for the account.
+	 */
+	@IsNotEmpty()
+	userName: string;
+
+	/**
 	 * The password for the account.
 	 */
 	@IsNotEmpty()

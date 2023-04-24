@@ -3,6 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AccountService } from './account.service';
 import { AccountController } from './account.controller';
+import { Account, AccountSchema } from './schema/account.schema';
+import { AuthService } from 'src/twitter/auth/auth.service';
 
 @Module({
 	imports: [
@@ -14,8 +16,14 @@ import { AccountController } from './account.controller';
 			}),
 			inject: [ConfigService],
 		}),
+		MongooseModule.forFeature([
+			{
+				name: Account.name,
+				schema: AccountSchema,
+			},
+		]),
 	],
 	controllers: [AccountController],
-	providers: [AccountService],
+	providers: [AccountService, AuthService],
 })
 export class AccountModule {}
