@@ -10,6 +10,9 @@ async function bootstrap(): Promise<void> {
 	// Initializing new NestJS app
 	const app = await NestFactory.create(AppModule);
 
+	// Enabling cors
+	app.enableCors();
+
 	// Adding global pipes
 	app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
