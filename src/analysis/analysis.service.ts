@@ -2,6 +2,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 
 // SERVICES
+import { ConfigService } from '@nestjs/config';
 import { TwitterService } from 'src/twitter/twitter.service';
 import { TweetService } from 'src/twitter/tweet/tweet.service';
 import { UserService } from 'src/twitter/user/user.service';
@@ -22,7 +23,7 @@ export class AnalysisService {
 		@Inject(TweetService) private tweets: TweetService,
 		@Inject(UserService) private users: UserService,
 		@Inject(NlpService) private nlp: NlpService,
-	) {}
+	) { }
 
 	/**
 	 * Fetches the most recent 'count' number of tweets of the Twitter user with the given id.

@@ -1,5 +1,6 @@
 // PACKAGES
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 // SERVICES
 import { AnalysisService } from './analysis.service';
@@ -13,6 +14,16 @@ import { AnalysisController } from './analysis.controller';
 
 @Module({
 	controllers: [AnalysisController],
-	providers: [AnalysisService, TwitterService, TweetService, UserService, NlpService],
+	providers: [
+		AnalysisService,
+		TwitterService,
+		TweetService,
+		UserService,
+		{
+			provide: NlpService,
+			inject: [ConfigService],
+			useFactory: (config: ConfigService): NlpService => new NlpService(config.get<string>('CLOUD_NLP_API_KEY'))
+		}
+	],
 })
-export class AnalysisModule {}
+export class AnalysisModule { }

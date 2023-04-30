@@ -14,6 +14,20 @@ import gcloudConfig from './config/cloud-nlp';
 @Injectable()
 export class NlpService {
 	/**
+	 * The cloud nlp API key.
+	 */
+	apiKey: string;
+
+	/**
+	 * Initializes a new NlpService instance that uses the given API key to communicate.
+	 * 
+	 * @param apiKey The API key to NLP platform to use.
+	 */
+	constructor(apiKey: string) {
+		this.apiKey = apiKey;
+	}
+
+	/**
 	 * Perform entity-wise sentiment analysis on the list of texts.
 	 *
 	 * @param texts The list of text whose sentiment is to be analyzed.
@@ -22,7 +36,7 @@ export class NlpService {
 	 */
 	async getEntitySentiment(texts: string[]): Promise<EntitySentimentResponse> {
 		// Getting the URL of the API endpoint to be called for sentiment analysis
-		const url = `${gcloudConfig.baseUrl}${gcloudConfig.endpoints.entitySentiment}?key=${gcloudConfig.apiKey}`;
+		const url = `${gcloudConfig.baseUrl}${gcloudConfig.endpoints.entitySentiment}?key=${this.apiKey}`;
 
 		// Preparing the payload
 		const payload: EntitySentimentPayload = new EntitySentimentPayload(texts);
@@ -49,7 +63,7 @@ export class NlpService {
 		let res: ClassificationResponse[] = [];
 
 		// Getting the URL of the API endpoint to be called for text classification
-		const url = `${gcloudConfig.baseUrl}${gcloudConfig.endpoints.textClassification}?key=${gcloudConfig.apiKey}`;
+		const url = `${gcloudConfig.baseUrl}${gcloudConfig.endpoints.textClassification}?key=${this.apiKey}`;
 
 		// Running classification on each text
 		for (const text of texts) {
